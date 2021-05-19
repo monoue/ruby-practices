@@ -1,5 +1,7 @@
+require 'date'
+
 def init_month(month)
-  if month.empty?
+  if month.nil?
     Date.today.month
   else
     month.to_i
@@ -7,7 +9,7 @@ def init_month(month)
 end
 
 def init_year(year)
-  if year.empty?
+  if year.nil?
     Date.today.year
   else
     year.to_i

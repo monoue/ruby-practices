@@ -1,7 +1,7 @@
 def make_month_error_message(month_option_var)
-  "cal: #{month_option_var} is not a month number (1..12)"
+  "#{PROGRAM_NAME}: #{month_option_var} is not a month number (#{MIN_OPTION_VALUE}..#{MONTH_LIMIT})"
 end
 
 def make_year_error_message(year_option_var)
-  "cal: year `#{year_option_var}' not in range 1..9999"
+  "#{PROGRAM_NAME}: year `#{year_option_var}' not in range #{MIN_OPTION_VALUE}..#{YEAR_LIMIT}"
 end
