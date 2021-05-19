@@ -8,9 +8,13 @@ def make_fizzbuzz_applied_elem(num)
   end
 end
 
+def make_fizzbuzz_applied_line(num)
+  "#{make_fizzbuzz_applied_elem(num)}\n"
+end
+
 def make_output_str
   str = ''
-  (1..20).each { |num| str.concat "#{make_fizzbuzz_applied_elem(num)}\n" }
+  (1..20).each { |num| str << make_fizzbuzz_applied_line(num) }
   str
 end
 
