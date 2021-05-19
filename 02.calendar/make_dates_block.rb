@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# frozen_string_literal: false
 
 require 'date'
 require_relative 'defs'
@@ -6,7 +6,7 @@ require_relative 'defs'
 def make_head_empty_str(int_opts)
   first_day = Date.new(int_opts[:year], int_opts[:month], 1).wday
   head_empty_str = ''
-  first_day.times { head_empty_str += EMPTY_DAY_STR }
+  first_day.times { head_empty_str << EMPTY_DAY_STR }
   head_empty_str
 end
 
@@ -14,7 +14,7 @@ def make_tail_empty_str(int_opts)
   end_day = Date.new(int_opts[:year], int_opts[:month], -1).wday
   repeat_times = SATURDAY - end_day
   tail_empty_str = ''
-  repeat_times.times { tail_empty_str += EMPTY_DAY_STR }
+  repeat_times.times { tail_empty_str << EMPTY_DAY_STR }
   "#{tail_empty_str} "
 end
 
@@ -34,7 +34,7 @@ def make_dates_str(int_opts)
     date = Date.new(int_opts[:year], int_opts[:month], date_num)
     today = (date == Date.today)
     date_str = make_date_str date_num, today
-    dates_str += "#{date_str} "
+    dates_str << "#{date_str} "
     if date.saturday? && date_num != end_date_num
       dates_str << " \n"
       current_height += 1
