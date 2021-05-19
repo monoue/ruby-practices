@@ -1,64 +1,22 @@
+# frozen_string_literal: true
+
 PROGRAM_NAME = 'cal'
-PROGRAM_NAME.freeze
-
 OPTION_FORMAT_ERROR_MESSAGE = "#{PROGRAM_NAME}: illegal argument(s)"
-OPTION_FORMAT_ERROR_MESSAGE.freeze
-
 OPTION_WITHOUT_ARGUMENT_ERROR_MESSAGE = "#{PROGRAM_NAME}: option requires an argument -- m"
-OPTION_WITHOUT_ARGUMENT_ERROR_MESSAGE.freeze
-
 USAGE = "Usage: #{PROGRAM_NAME} [-m month] [-y year]"
-USAGE.freeze
-
 YEAR_ONLY_ERROR_MESSAGE = "#{PROGRAM_NAME}: year is not set with month"
-YEAR_ONLY_ERROR_MESSAGE.freeze
-
 WIDTH = 22
-WIDTH.freeze
-
-MIN_OPTION_VALUE = 1
-MIN_OPTION_VALUE.freeze
-
-MONTH_LIMIT = 12
-MONTH_LIMIT.freeze
-
-YEAR_LIMIT = 9999
-YEAR_LIMIT.freeze
-
+MONTH_MIN = 1
+MONTH_MAX = 12
+YEAR_MIN = 1
+YEAR_MAX = 9999
 DAYS_WIDTH = 15
-DAYS_WIDTH.freeze
-
 DATES_ROW_HEIGHT = 6
-DATES_ROW_HEIGHT.freeze
-
 COLOR_INVERSION = "\e[7m"
-COLOR_INVERSION.freeze
-
 RESET = "\e[0m"
-RESET.freeze
-
-DAYS = [
-  '日',
-  '月',
-  '火',
-  '水',
-  '木',
-  '金',
-  '土',
-]
-DAYS.freeze
-
+DAYS = %w[日 月 火 水 木 金 土].freeze
 ADJUSTMENT_STR = ' ' * 3
-ADJUSTMENT_STR.freeze
-
 EMPTY_DAY_STR = ' ' * 3
-EMPTY_DAY_STR.freeze
-
 SATURDAY = 6
-SATURDAY.freeze
-
-EMPTY_LINE = "\n" << ' ' * 22
-EMPTY_LINE.freeze
-
+EMPTY_LINE = "\n#{' ' * 22}"
 MONTH_YEAR_CENTER_STR = '月 '
-MONTH_YEAR_CENTER_STR.freeze

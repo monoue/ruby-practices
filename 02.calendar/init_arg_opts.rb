@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def init_arg_opts(opt)
   arg_opts = {}
   opt.on('-m [month]') { |v| arg_opts[:month] = v }

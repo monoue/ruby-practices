@@ -1,6 +1,8 @@
-require_relative "make_month_year_line"
-require_relative "make_days_of_week_line"
-require_relative "make_dates_block"
+# frozen_string_literal: true
+
+require_relative 'make_month_year_line'
+require_relative 'make_days_of_week_line'
+require_relative 'make_dates_block'
 
 def make_calendar(int_opts)
   month_year_line = make_month_year_line int_opts
