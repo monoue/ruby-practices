@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# frozen_string_literal: true
+# frozen_string_literal: false
 
 def make_fizzbuzz_applied_elem(num)
   if (num % 15).zero? then :FizzBuzz
