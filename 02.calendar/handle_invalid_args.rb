@@ -7,16 +7,16 @@ require_relative 'make_error_message'
 def handle_invalid_option_format
   return unless ARGV.size.positive?
 
-  puts "#{OPTION_FORMAT_ERROR_MESSAGE}\n#{USAGE}"
+  puts "#{OPTION_FORMAT_ERR_MESSAGE}\n#{USAGE}"
   exit
 end
 
 def handle_invalid_usage(arg_opts)
   if arg_opts.key?(:year) && !arg_opts.key?(:month)
-    puts YEAR_ONLY_ERROR_MESSAGE
+    puts YEAR_ONLY_ERR_MESSAGE
     exit
   elsif arg_opts.key?(:month) && arg_opts[:month].nil?
-    puts "#{OPTION_WITHOUT_ARGUMENT_ERROR_MESSAGE}\n#{USAGE}"
+    puts "#{OPTION_WITHOUT_ARG_ERR_MESSAGE}\n#{USAGE}"
     exit
   end
 end

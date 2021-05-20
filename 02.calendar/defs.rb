@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 PROGRAM_NAME = 'cal'
-OPTION_FORMAT_ERROR_MESSAGE = "#{PROGRAM_NAME}: illegal argument(s)"
-OPTION_WITHOUT_ARGUMENT_ERROR_MESSAGE = "#{PROGRAM_NAME}: option requires an argument -- m"
+OPTION_FORMAT_ERR_MESSAGE = "#{PROGRAM_NAME}: illegal argument(s)"
+OPTION_WITHOUT_ARG_ERR_MESSAGE = "#{PROGRAM_NAME}: option requires an argument -- m"
 USAGE = "Usage: #{PROGRAM_NAME} [-m month] [-y year]"
-YEAR_ONLY_ERROR_MESSAGE = "#{PROGRAM_NAME}: year is not set with month"
+YEAR_ONLY_ERR_MESSAGE = "#{PROGRAM_NAME}: year is not set with month"
 WIDTH = 22
 MONTH_MIN = 1
 MONTH_MAX = 12
