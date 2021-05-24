@@ -45,6 +45,6 @@ def make_dates_block(int_opts)
   tail_empty_str = make_tail_empty_str int_opts
   empty_line = "\n#{' ' * 22}"
   dates_rows_height = 6
-  tail_empty_str << empty_line unless dates_str_height == dates_rows_height
+  tail_empty_str << empty_line if dates_str_height < dates_rows_height
   "#{head_empty_str}#{dates_str}#{tail_empty_str}"
 end
