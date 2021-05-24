@@ -19,8 +19,5 @@ def init_year(year)
 end
 
 def init_int_opts(arg_opts)
-  int_opts = {}
-  int_opts[:month] = init_month arg_opts[:month]
-  int_opts[:year] = init_year arg_opts[:year]
-  int_opts
+  { month: init_month(arg_opts[:month]), year: init_year(arg_opts[:year]) }
 end

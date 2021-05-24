@@ -1,22 +1,24 @@
 # frozen_string_literal: true
 
-require_relative 'defs'
 require_relative 'valid_arg'
 require_relative 'make_error_message'
+require_relative 'make_program_name'
+
+USAGE = "Usage: #{make_program_name} [-m month] [-y year]"
 
 def handle_invalid_option_format
   return unless ARGV.size.positive?
 
-  puts "#{OPTION_FORMAT_ERR_MESSAGE}\n#{USAGE}"
+  puts "#{make_program_name}: illegal argument(s)\n#{USAGE}"
   exit
 end
 
 def handle_invalid_usage(arg_opts)
   if arg_opts.key?(:year) && !arg_opts.key?(:month)
-    puts YEAR_ONLY_ERR_MESSAGE
+    puts "#{make_program_name}: year is not set with month"
     exit
   elsif arg_opts.key?(:month) && arg_opts[:month].nil?
-    puts "#{OPTION_WITHOUT_ARG_ERR_MESSAGE}\n#{USAGE}"
+    puts "#{make_program_name}: option requires an argument -- m\n#{USAGE}"
     exit
   end
 end
