@@ -43,12 +43,12 @@ end
 class TestUserName < Minitest::Test
   def test_user_name1
     file_info = File.lstat('/iSCSI')
-    assert_equal 'root', get_user_name(file_info)
+    assert_equal 'root', get_owner_name(file_info)
   end
 
   def test_user_name2
     file_info = File.lstat('/exam')
-    assert_equal 'exam', get_user_name(file_info)
+    assert_equal 'exam', get_owner_name(file_info)
   end
 end
 

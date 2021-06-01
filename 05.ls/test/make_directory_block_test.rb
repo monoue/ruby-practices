@@ -8,7 +8,7 @@ TEXT
 class TestLongFormatFileType < Minitest::Test
   def test_long_format_regular_file
     file_info = File.lstat('/bin/cat')
-    assert_equal CASE.chomp, make_directory_block('.', {})
+    assert_equal CASE.chomp, make_dir_block('.', {})
   end
 
 
@@ -20,7 +20,7 @@ class TestLongFormatFileType < Minitest::Test
 'bin                       dev                       exam                      home                      '\
 'installer.failurerequests nfs                       sbin                      tmp                       var'
     file_info = File.lstat('/')
-    assert_equal root, make_directory_block('/', {})
+    assert_equal root, make_dir_block('/', {})
   end
 end
 

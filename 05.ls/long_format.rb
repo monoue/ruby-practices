@@ -6,8 +6,8 @@ def get_file_type(file_info)
   elsif file_info.chardev? then 'c'
   elsif file_info.directory? then 'd'
   elsif file_info.symlink? then 'l'
-  elsif file_info.socket? then 's'
   elsif file_info.pipe? then 'p'
+  elsif file_info.socket? then 's'
   elsif file_info.file? then '-'
   else ' '
   end
@@ -60,11 +60,15 @@ module Permission
   end
 end
 
-def get_mode_block(file_info)
-  "#{get_file_type(file_info)}#{Permission.get_permission(file_info)}"
+def get_mac_extended_attributes
+  ' '
 end
 
-def get_user_name(file_info)
+def get_mode_block(file_info)
+  "#{get_file_type(file_info)}#{Permission.get_permission(file_info)}#{get_mac_extended_attributes}"
+end
+
+def get_owner_name(file_info)
   Etc.getpwuid(file_info.uid).name
 end
 
@@ -80,7 +84,7 @@ end
 
 def get_time_or_year(file_mtime)
   if recent?(file_mtime)
-    format '%0d:%0d', file_mtime.hour, file_mtime.min
+    format '%02d:%02d', file_mtime.hour, file_mtime.min
   else
     format '%5d', file_mtime.year
   end
@@ -91,4 +95,17 @@ def get_time_stamp(file_mtime)
   day = format '%2d', file_mtime.day
   time_or_year = get_time_or_year(file_mtime)
   "#{month} #{day} #{time_or_year}"
+end
+
+def get_long_format_line_info(filename, file_info)
+  {
+    filename: filename,
+    mode_block: get_mode_block(file_info),
+    nlink: file_info.nlink,
+    owner_name: get_owner_name(file_info),
+    group_name: get_group_name(file_info),
+    size: file_info.size,
+    time_stamp: get_time_stamp(file_info.mtime),
+    blocks: file_info.blocks
+  }
 end
