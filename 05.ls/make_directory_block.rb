@@ -1,13 +1,21 @@
 require 'io/console'
 require_relative './long_format'
 
+def count_multibyte_chars(str)
+  # p str.chars.reject(&:ascii_only?).length
+  str.chars.reject(&:ascii_only?).length
+end
+
+def strlen_multibyte(str)
+  # p str
+  # p str.length
+  # p str.chars.reject(&:ascii_only?).length
+  # p str.length + str.chars.reject(&:ascii_only?).length * 2
+  str.length + count_multibyte_chars(str) * 2
+end
+
 def get_width_for_elem(filenames)
-  filenames.map(&:length).max + 1
-  # max_filename_len = 0
-  # filenames.each do |filename|
-  #   max_filename_len = max(filename.length, max_filename_len)
-  # end
-  # max_filename_len + 1
+  filenames.map{ |filename| strlen_multibyte(filename) }.max + 1
 end
 
 def init_filenames(dir_name, options)
@@ -23,8 +31,8 @@ def make_normal_dir_block(filenames)
   rows_num = (filenames.size / elems_num_per_line.to_f).ceil
   str = ''
   (0...rows_num).each do |current_row|
-    current_row.step(filenames.size, rows_num) do |i|
-      str << format('%-*s', width_for_elem, filenames[i])
+    current_row.step(filenames.size - 1, rows_num) do |i|
+      str << format('%-*s', width_for_elem - count_multibyte_chars(filenames[i]), filenames[i])
     end
     str.rstrip! << "\n"
   end
@@ -88,4 +96,6 @@ def make_dir_block(dir_path, options, needs_dir_block_header)
   needs_dir_block_header ? "#{make_dir_block_header_line(dir_path)}#{dir_block}" : dir_block
 end
 
-print make_dir_block('/', { reverse: true, long_format: true, all: true}, true)
+# print make_dir_block('/', { reverse: true, long_format: true, all: true}, true)
+# print make_dir_block('.', { reverse: true, long_format: true, all: true}, false)
+print make_dir_block('./tmp', { reverse: false, long_format: false, all: false}, false)
