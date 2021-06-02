@@ -13,14 +13,8 @@ def get_width_for_elem(filenames)
   filenames.map{ |filename| strlen_multibyte(filename) }.max + 1
 end
 
-def init_filenames(dir_name, options)
-  filenames = Dir.entries(dir_name)
-  filenames = filenames.reject { |filename| filename[0] == '.' } unless options[:all]
-  filenames.sort!
-  options[:reverse] ? filenames.reverse : filenames
-end
-
 def make_normal_dir_block(filenames)
+  return '' if filenames.size <= 0
   width_for_elem = get_width_for_elem(filenames)
   elems_num_per_line = IO.console.winsize[1] / width_for_elem
   rows_num = (filenames.size / elems_num_per_line.to_f).ceil
@@ -34,23 +28,24 @@ def make_normal_dir_block(filenames)
   str
 end
 
-# def init_long_format_line_infos(filenames)
-#   long_format_line_infos = []
-#   filenames.each do |filename|
-#     long_format_line_infos << get_long_format_line_info(filename, File.lstat(filename))
-#   end
-#   long_format_line_infos
-# end
-
-# TODO: 元の
-def init_long_format_line_infos(dir_path, filenames)
+# TODO: 改変後
+def init_long_format_line_infos(filenames)
   long_format_line_infos = []
   filenames.each do |filename|
-    full_path = dir_path[-1] == '/' ? "#{dir_path}#{filename}" : "#{dir_path}/#{filename}"
-    long_format_line_infos << get_long_format_line_info(filename, File.lstat(full_path), full_path)
+    long_format_line_infos << get_long_format_line_info(filename, File.lstat(filename))
   end
   long_format_line_infos
 end
+
+# TODO: 改変前
+# def init_long_format_line_infos(dir_path, filenames)
+#   long_format_line_infos = []
+#   filenames.each do |filename|
+#     full_path = dir_path[-1] == '/' ? "#{dir_path}#{filename}" : "#{dir_path}/#{filename}"
+#     long_format_line_infos << get_long_format_line_info(filename, File.lstat(full_path), full_path)
+#   end
+#   long_format_line_infos
+# end
 
 def count_digits(num)
   Math.log10(num.abs).to_i + 1 rescue 1
@@ -76,27 +71,48 @@ def make_total_blocks_line(total_blocks)
   "total #{total_blocks}\n"
 end
 
-def make_long_format_dir_block(dir_path, filenames)
-  long_format_line_infos = init_long_format_line_infos(dir_path, filenames)
+# # TODO: 改変前
+# def make_long_format_dir_block(dir_path, filenames)
+#   long_format_line_infos = init_long_format_line_infos(dir_path, filenames)
+#   widths = init_widths(long_format_line_infos)
+#   str = ''
+#   # TODO: inject にできないか試す
+#   long_format_line_infos.each do |info|
+#     str << make_long_format_line(info, widths)
+#   end
+#   return str if filenames.size <= 0
+#   total_blocks = long_format_line_infos.map { |info| info[:blocks] }.sum
+#   "#{make_total_blocks_line(total_blocks)}#{str}"
+# end
+
+def make_long_format_block(filenames)
+  long_format_line_infos = init_long_format_line_infos(filenames)
   widths = init_widths(long_format_line_infos)
   str = ''
   # TODO: inject にできないか試す
   long_format_line_infos.each do |info|
     str << make_long_format_line(info, widths)
   end
-  return str if filenames.size <= 0
+  str
+end
+
+# TODO: 改変後
+def make_long_format_dir_block(filenames)
+  return '' if filenames.size <= 0
+  long_format_block = make_long_format_block(filenames)
+  long_format_line_infos = init_long_format_line_infos(filenames)
   total_blocks = long_format_line_infos.map { |info| info[:blocks] }.sum
-  "#{make_total_blocks_line(total_blocks)}#{str}"
+  "#{make_total_blocks_line(total_blocks)}#{long_format_block}"
 end
 
 def make_dir_block_header_line(dir_path)
   "#{dir_path}:\n"
 end
 
-# def make_directory_block(dir_path, options)
-def make_dir_block(dir_path, options, needs_dir_block_header)
-  filenames = init_filenames(dir_path, options)
-  dir_block = options[:long_format] ? make_long_format_dir_block(dir_path, filenames) : make_normal_dir_block(filenames)
+# TODO: mak_dir_block かｒ　dir_block 作成部分を切り出し、別で使えるようにする
+
+def make_dir_block(filenames, dir_path, long_format, needs_dir_block_header)
+  dir_block = long_format ? make_long_format_dir_block(filenames) : make_normal_dir_block(filenames)
   needs_dir_block_header ? "#{make_dir_block_header_line(dir_path)}#{dir_block}" : dir_block
 end
 
