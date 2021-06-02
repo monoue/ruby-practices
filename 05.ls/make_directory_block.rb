@@ -2,15 +2,10 @@ require 'io/console'
 require_relative './long_format'
 
 def count_multibyte_chars(str)
-  # p str.chars.reject(&:ascii_only?).length
   str.chars.reject(&:ascii_only?).length
 end
 
 def strlen_multibyte(str)
-  # p str
-  # p str.length
-  # p str.chars.reject(&:ascii_only?).length
-  # p str.length + str.chars.reject(&:ascii_only?).length * 2
   str.length + count_multibyte_chars(str) * 2
 end
 
@@ -98,4 +93,4 @@ end
 
 # print make_dir_block('/', { reverse: true, long_format: true, all: true}, true)
 # print make_dir_block('.', { reverse: true, long_format: true, all: true}, false)
-print make_dir_block('./tmp', { reverse: false, long_format: false, all: false}, false)
+# print make_dir_block('./tmp', { reverse: false, long_format: false, all: false}, false)
