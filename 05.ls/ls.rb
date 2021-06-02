@@ -63,31 +63,14 @@ def init_filenames(dir_name, options)
   options[:reverse] ? filenames.reverse : filenames
 end
 
-def make_dir_blocks(directories, options, needs_dir_block_header)
+def make_dir_blocks(directories, options)
   dir_blocks = []
   directories.each do |directory|
-    dir_blocks << make_dir_block(init_filenames(directory, options), directory, options[:long_format], needs_dir_block_header)
+    dir_blocks << make_dir_block(init_filenames(directory, options), directory, options[:long_format])
   end
   dir_blocks
 end
 
-# TODO: 改変前
-# def main
-#   opt = OptionParser.new
-#   options = init_options(opt)
-#   parse_options(opt)
-#   return print make_dir_block(init_filenames('.', options), '.', options[:long_format], false) if ARGV.size < 1
-#   needs_dir_block_header = ARGV.size > 1 ? true : false
-#   paths = classify_and_sort_paths(options[:reverse])
-#   noent_block = make_noent_block(paths[:paths_not_exist])
-#
-#   files_block = options[:long_format] ? make_long_format_block(paths[:files]) : make_normal_dir_block(paths[:files])
-#   dir_blocks = make_dir_blocks(paths[:directories], options, needs_dir_block_header)
-#   body_blocks = files_block.length > 0 ? dir_blocks.unshift(files_block) : dir_blocks
-#   print "#{noent_block}#{body_blocks.join("\n")}"
-# end
-
-# TODO: 改変後
 def parse_and_init_options
   opt = OptionParser.new
   options = init_options(opt)
@@ -95,22 +78,19 @@ def parse_and_init_options
   options
 end
 
-# def make_result(options)
-#
-# end
+def make_result(options)
+  return make_dir_block(init_filenames('.', options), '.', options[:long_format]) if ARGV.size < 1
+  paths = classify_and_sort_paths(options[:reverse])
+  noent_block = make_noent_block(paths[:paths_not_exist])
+  files_block = options[:long_format] ? make_long_format_block(paths[:files]) : make_normal_dir_block(paths[:files])
+  dir_blocks = make_dir_blocks(paths[:directories], options)
+  body_blocks = files_block.length > 0 ? dir_blocks.unshift(files_block) : dir_blocks
+  "#{noent_block}#{body_blocks.join("\n")}"
+end
 
 def main
   options = parse_and_init_options
-  # print make_result(options)
-  return print make_dir_block(init_filenames('.', options), '.', options[:long_format], false) if ARGV.size < 1
-  needs_dir_block_header = ARGV.size > 1 ? true : false
-  paths = classify_and_sort_paths(options[:reverse])
-  noent_block = make_noent_block(paths[:paths_not_exist])
-
-  files_block = options[:long_format] ? make_long_format_block(paths[:files]) : make_normal_dir_block(paths[:files])
-  dir_blocks = make_dir_blocks(paths[:directories], options, needs_dir_block_header)
-  body_blocks = files_block.length > 0 ? dir_blocks.unshift(files_block) : dir_blocks
-  print "#{noent_block}#{body_blocks.join("\n")}"
+  print make_result(options)
 end
 
 main

@@ -28,24 +28,15 @@ def make_normal_dir_block(filenames)
   str
 end
 
-# TODO: 改変後
 def init_long_format_line_infos(filenames)
   long_format_line_infos = []
   filenames.each do |filename|
+    p filename
+    p File.lstat(filename)
     long_format_line_infos << get_long_format_line_info(filename, File.lstat(filename))
   end
   long_format_line_infos
 end
-
-# TODO: 改変前
-# def init_long_format_line_infos(dir_path, filenames)
-#   long_format_line_infos = []
-#   filenames.each do |filename|
-#     full_path = dir_path[-1] == '/' ? "#{dir_path}#{filename}" : "#{dir_path}/#{filename}"
-#     long_format_line_infos << get_long_format_line_info(filename, File.lstat(full_path), full_path)
-#   end
-#   long_format_line_infos
-# end
 
 def count_digits(num)
   Math.log10(num.abs).to_i + 1 rescue 1
@@ -71,20 +62,6 @@ def make_total_blocks_line(total_blocks)
   "total #{total_blocks}\n"
 end
 
-# # TODO: 改変前
-# def make_long_format_dir_block(dir_path, filenames)
-#   long_format_line_infos = init_long_format_line_infos(dir_path, filenames)
-#   widths = init_widths(long_format_line_infos)
-#   str = ''
-#   # TODO: inject にできないか試す
-#   long_format_line_infos.each do |info|
-#     str << make_long_format_line(info, widths)
-#   end
-#   return str if filenames.size <= 0
-#   total_blocks = long_format_line_infos.map { |info| info[:blocks] }.sum
-#   "#{make_total_blocks_line(total_blocks)}#{str}"
-# end
-
 def make_long_format_block(filenames)
   long_format_line_infos = init_long_format_line_infos(filenames)
   widths = init_widths(long_format_line_infos)
@@ -109,13 +86,7 @@ def make_dir_block_header_line(dir_path)
   "#{dir_path}:\n"
 end
 
-# TODO: mak_dir_block かｒ　dir_block 作成部分を切り出し、別で使えるようにする
-
-def make_dir_block(filenames, dir_path, long_format, needs_dir_block_header)
+def make_dir_block(filenames, dir_path, long_format)
   dir_block = long_format ? make_long_format_dir_block(filenames) : make_normal_dir_block(filenames)
-  needs_dir_block_header ? "#{make_dir_block_header_line(dir_path)}#{dir_block}" : dir_block
+  ARGV.size > 1 ? "#{make_dir_block_header_line(dir_path)}#{dir_block}" : dir_block
 end
-
-# print make_dir_block('/', { reverse: true, long_format: true, all: true}, true)
-# print make_dir_block('.', { reverse: true, long_format: true, all: true}, false)
-# print make_dir_block('./tmp', { reverse: false, long_format: false, all: false}, false)
