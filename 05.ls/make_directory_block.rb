@@ -34,6 +34,15 @@ def make_normal_dir_block(filenames)
   str
 end
 
+# def init_long_format_line_infos(filenames)
+#   long_format_line_infos = []
+#   filenames.each do |filename|
+#     long_format_line_infos << get_long_format_line_info(filename, File.lstat(filename))
+#   end
+#   long_format_line_infos
+# end
+
+# TODO: 元の
 def init_long_format_line_infos(dir_path, filenames)
   long_format_line_infos = []
   filenames.each do |filename|
