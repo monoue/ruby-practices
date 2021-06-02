@@ -38,7 +38,7 @@ def init_long_format_line_infos(dir_path, filenames)
   long_format_line_infos = []
   filenames.each do |filename|
     full_path = dir_path[-1] == '/' ? "#{dir_path}#{filename}" : "#{dir_path}/#{filename}"
-    long_format_line_infos << get_long_format_line_info(filename, File.lstat(full_path))
+    long_format_line_infos << get_long_format_line_info(filename, File.lstat(full_path), full_path)
   end
   long_format_line_infos
 end

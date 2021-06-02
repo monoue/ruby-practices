@@ -1,4 +1,4 @@
-
+require 'mac'
 require 'etc'
 
 def get_file_type(file_info)
@@ -60,12 +60,13 @@ module Permission
   end
 end
 
-def get_mac_extended_attributes
-  ' '
+def get_mac_extended_attributes(full_path)
+  mac = Mac.new
+  mac.attr(full_path)
 end
 
-def get_mode_block(file_info)
-  "#{get_file_type(file_info)}#{Permission.get_permission(file_info)}#{get_mac_extended_attributes}"
+def get_mode_block(file_info, full_path)
+  "#{get_file_type(file_info)}#{Permission.get_permission(file_info)}#{get_mac_extended_attributes(full_path)}"
 end
 
 def get_owner_name(file_info)
@@ -97,10 +98,10 @@ def get_time_stamp(file_mtime)
   "#{month} #{day} #{time_or_year}"
 end
 
-def get_long_format_line_info(filename, file_info)
+def get_long_format_line_info(filename, file_info, full_path)
   {
     filename: filename,
-    mode_block: get_mode_block(file_info),
+    mode_block: get_mode_block(file_info, full_path),
     nlink: file_info.nlink,
     owner_name: get_owner_name(file_info),
     group_name: get_group_name(file_info),
