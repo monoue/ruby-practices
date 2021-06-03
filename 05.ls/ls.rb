@@ -1,51 +1,70 @@
 #!/usr/bin/env ruby
 
-require_relative 'make_directory_block'
+# frozen_string_literal: false
+
+require_relative 'make_directory_blocks'
 require 'optparse'
 
-def parse_options(opt)
-  begin
-    opt.parse!(ARGV)
-  rescue => e
-    puts e.message
-    exit(false)
-  end
-end
+module Option
+  class << self
+    def parse_options(opt)
+      opt.parse!(ARGV)
+    rescue OptionParser::InvalidOption => e
+      puts e.message
+      exit(false)
+    end
 
-def init_options(opt)
-  options = {}
-  opt.on('-a') {options[:all] = true}
-  opt.on('-l') {options[:long_format] = true}
-  opt.on('-r') {options[:reverse] = true}
-  options
-end
-
-def sort_classified_paths(paths, reverse)
-  paths.values.each { |values| values.sort! }
-  if reverse
-    paths[:files].reverse!
-    paths[:directories].reverse!
-  end
-  paths
-end
-
-def classify_paths
-  paths = {files: [], directories: [], paths_not_exist: []}
-  ARGV.each do |path|
-    if File.file?(path)
-      paths[:files] << path
-    elsif File.directory?(path)
-      paths[:directories] << path
-    else
-      paths[:paths_not_exist] << path
+    def init_options(opt)
+      options = {}
+      opt.on('-a') { options[:all] = true }
+      opt.on('-l') { options[:long_format] = true }
+      opt.on('-r') { options[:reverse] = true }
+      options
     end
   end
-  paths
+
+  private_class_method :parse_options, :init_options
+
+  def self.parse_and_init_options
+    opt = OptionParser.new
+    options = init_options(opt)
+    parse_options(opt)
+    options
+  end
 end
 
-def classify_and_sort_paths(reverse)
-  paths = classify_paths
-  sort_classified_paths(paths, reverse)
+module ClassifyAndSort
+  class << self
+    def sort_classified_paths(paths, reverse)
+      paths.each_value(&:sort!)
+      if reverse
+        paths[:files].reverse!
+        paths[:directories].reverse!
+      end
+      paths
+    end
+
+    def classify_paths
+      paths = { files: [], directories: [], paths_not_exist: [] }
+      ARGV.each do |path|
+        if File.file?(path)
+          paths[:files] << path
+        elsif File.directory?(path)
+          paths[:directories] << path
+        else
+          paths[:paths_not_exist] << path
+        end
+      end
+      paths
+    end
+  end
+
+  private_class_method :sort_classified_paths, :classify_paths
+
+  def self.classify_and_sort_paths(reverse)
+    paths = classify_paths
+    sort_classified_paths(paths, reverse)
+  end
 end
 
 def make_noent_block(paths_not_exist)
@@ -56,40 +75,23 @@ def make_noent_block(paths_not_exist)
   block
 end
 
-def init_filenames(dir_name, options)
-  filenames = Dir.entries(dir_name)
-  filenames = filenames.reject { |filename| filename[0] == '.' } unless options[:all]
-  filenames.sort!
-  options[:reverse] ? filenames.reverse : filenames
-end
-
-def make_dir_blocks(directories, options)
-  dir_blocks = []
-  directories.each do |directory|
-    dir_blocks << make_dir_block(init_filenames(directory, options), directory, options[:long_format])
-  end
-  dir_blocks
-end
-
-def parse_and_init_options
-  opt = OptionParser.new
-  options = init_options(opt)
-  parse_options(opt)
-  options
+def make_body_blocks(paths, options)
+  files_block = options[:long_format] ? LongFormat.make_long_format_block(paths[:files], '.') : NormalFormat.make_normal_dir_block(paths[:files])
+  dir_blocks = DirBlock.make_dir_blocks(paths[:directories], options)
+  files_block.length.positive? ? dir_blocks.unshift(files_block) : dir_blocks
 end
 
 def make_result(options)
-  return make_dir_block(init_filenames('.', options), '.', options[:long_format]) if ARGV.size < 1
-  paths = classify_and_sort_paths(options[:reverse])
+  return DirBlock.make_dir_block('.', options) if ARGV.empty?
+
+  paths = ClassifyAndSort.classify_and_sort_paths(options[:reverse])
   noent_block = make_noent_block(paths[:paths_not_exist])
-  files_block = options[:long_format] ? make_long_format_block(paths[:files]) : make_normal_dir_block(paths[:files])
-  dir_blocks = make_dir_blocks(paths[:directories], options)
-  body_blocks = files_block.length > 0 ? dir_blocks.unshift(files_block) : dir_blocks
+  body_blocks = make_body_blocks(paths, options)
   "#{noent_block}#{body_blocks.join("\n")}"
 end
 
 def main
-  options = parse_and_init_options
+  options = Option.parse_and_init_options
   print make_result(options)
 end
 
