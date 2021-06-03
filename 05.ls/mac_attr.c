@@ -37,4 +37,3 @@ void Init_mac()
   cMac = rb_define_class("Mac", rb_cObject);
   rb_define_method(cMac, "attr", RUBY_METHOD_FUNC(attr_func), 1);
 }
-
