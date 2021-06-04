@@ -70,7 +70,7 @@ module Arg
 
     def make_line_from_arg(arg, lines_only)
       File.open(arg) { |file| "#{Info.make_info_part_from_str(file.read, lines_only)} #{arg}\n" }
-    rescue Errno::ENOENT, Errno::EACCES => e
+    rescue Errno::EACCES, Errno::EISDIR, Errno::ENOENT => e
       make_error_message_line(arg, e.class.new)
     end
 
