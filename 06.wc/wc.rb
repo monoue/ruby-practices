@@ -41,24 +41,31 @@ module Info
 
   private_class_method :make_block
 
-  def self.make_info_part_from_nums(nums)
-    str = ''
-    nums.each do |num|
-      str << make_block(num)
+  class << self
+    def make_info_part_from_nums(nums)
+      str = ''
+      nums.each do |num|
+        str << make_block(num)
+      end
+      str
     end
-    str
-  end
 
-  def self.make_info_part_from_str(str, lines_only)
-    lines_n = str.count("\n")
-    @total_lines_n += lines_n if ARGV.size > 1
-    return make_block(lines_n) if lines_only
+    def make_info_part_from_str(str, lines_only)
+      lines_n = str.count("\n")
+      @total_lines_n += lines_n if ARGV.size > 1
+      return make_block(lines_n) if lines_only
 
-    words_n = str.split("\s").size
-    @total_lines_n += lines_n if ARGV.size > 1
-    bytes_n = str.bytesize
-    @total_bytes_n += bytes_n if ARGV.size > 1
-    make_info_part_from_nums([lines_n, words_n, bytes_n])
+      words_n = str.split("\s").size
+      @total_words_n += words_n if ARGV.size > 1
+      bytes_n = str.bytesize
+      @total_bytes_n += bytes_n if ARGV.size > 1
+      make_info_part_from_nums([lines_n, words_n, bytes_n])
+    end
+
+    def make_total_line(lines_only)
+      nums = lines_only ? [@total_lines_n] : [@total_lines_n, @total_words_n, @total_bytes_n]
+      "#{Info.make_info_part_from_nums nums} total\n"
+    end
   end
 end
 
@@ -73,21 +80,16 @@ module Arg
     rescue Errno::EACCES, Errno::EISDIR, Errno::ENOENT => e
       make_error_message_line(arg, e.class.new)
     end
-
-    def make_total_line(lines_only)
-      nums = lines_only ? [@total_lines_n] : [@total_lines_n, @total_words_n, @total_bytes_n]
-      "#{Info.make_info_part_from_nums nums} total\n"
-    end
   end
 
-  private_class_method :make_error_message_line, :make_line_from_arg, :make_total_line
+  private_class_method :make_error_message_line, :make_line_from_arg
 
   def self.make_result_from_argv(lines_only)
     str = ''
     ARGV.each do |arg|
       str << make_line_from_arg(arg, lines_only)
     end
-    str << make_total_line(lines_only) if ARGV.size > 1
+    str << Info.make_total_line(lines_only) if ARGV.size > 1
     str
   end
 end
