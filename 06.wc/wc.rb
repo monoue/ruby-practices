@@ -6,6 +6,15 @@ require 'optparse'
 
 module Option
   class << self
+    def parse_and_init_lines_only
+      opt = OptionParser.new
+      option = init_option(opt)
+      parse_options(opt)
+      option[:lines_only]
+    end
+
+    private
+
     def parse_options(opt)
       opt.parse!(ARGV)
     rescue OptionParser::InvalidOption => e
@@ -19,15 +28,6 @@ module Option
       option
     end
   end
-
-  private_class_method :parse_options, :init_option
-
-  def self.parse_and_init_lines_only
-    opt = OptionParser.new
-    option = init_option(opt)
-    parse_options(opt)
-    option[:lines_only]
-  end
 end
 
 module Info
@@ -35,19 +35,9 @@ module Info
   @total_words_n = 0
   @total_bytes_n = 0
 
-  def self.make_block(num)
-    format('%8d', num)
-  end
-
-  private_class_method :make_block
-
   class << self
     def make_info_part_from_nums(nums)
-      str = ''
-      nums.each do |num|
-        str << make_block(num)
-      end
-      str
+      nums.map { |num| make_block(num) }.join
     end
 
     def make_info_part_from_str(str, lines_only)
@@ -66,11 +56,28 @@ module Info
       nums = lines_only ? [@total_lines_n] : [@total_lines_n, @total_words_n, @total_bytes_n]
       "#{Info.make_info_part_from_nums nums} total\n"
     end
+
+    private
+
+    def make_block(num)
+      format('%8d', num)
+    end
   end
 end
 
 module Arg
   class << self
+    def make_result_from_argv(lines_only)
+      str = ''
+      ARGV.each do |arg|
+        str << make_line_from_arg(arg, lines_only)
+      end
+      str << Info.make_total_line(lines_only) if ARGV.size > 1
+      str
+    end
+
+    private
+
     def make_error_message_line(arg, error_message)
       format("wc :%<arg>s: open: %<err_msg>s\n", arg: arg, err_msg: error_message)
     end
@@ -80,17 +87,6 @@ module Arg
     rescue Errno::EACCES, Errno::EISDIR, Errno::ENOENT => e
       make_error_message_line(arg, e.class.new)
     end
-  end
-
-  private_class_method :make_error_message_line, :make_line_from_arg
-
-  def self.make_result_from_argv(lines_only)
-    str = ''
-    ARGV.each do |arg|
-      str << make_line_from_arg(arg, lines_only)
-    end
-    str << Info.make_total_line(lines_only) if ARGV.size > 1
-    str
   end
 end
 
