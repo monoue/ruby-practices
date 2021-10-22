@@ -4,4 +4,6 @@
 
 require './lib/game'
 
-puts Game.new(ARGV[0]).result
+if __FILE__ == $PROGRAM_NAME # rubocop:disable Style/IfUnlessModifier
+  puts Game.new(ARGV[0]).result
+end

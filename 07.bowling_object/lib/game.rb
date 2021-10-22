@@ -23,15 +23,15 @@ class Game
   def set_frames
     index = 0
     loop do
-      add_frame(Frame.new(*(marks[index..index + 2])))
+      add_frame(Frame.new(*marks[index..index + 2]))
       increments_frame_count
-      if frame_count == 10
-        break
-      elsif marks[index] == 'X'
-        index += 1
-      else
-        index += 2
-      end
+      break if frame_count == 10
+
+      index += if marks[index] == 'X'
+                 1
+               else
+                 2
+               end
     end
   end
 
@@ -43,15 +43,5 @@ class Game
     @frames << frame
   end
 
-  def frames
-    @frames
-  end
-
-  def marks
-    @marks
-  end
-
-  def frame_count
-    @frame_count
-  end
+  attr_reader :frames, :marks, :frame_count
 end

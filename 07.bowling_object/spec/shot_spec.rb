@@ -1,9 +1,9 @@
-require 'spec_helper'
+# frozen_string_literal: true
 
 RSpec.describe Shot do
   describe 'score' do
     context "when mark is 'X'" do
-      it "returns 10" do
+      it 'returns 10' do
         expect(Shot.new('X').score).to eq 10
       end
     end
@@ -14,7 +14,7 @@ RSpec.describe Shot do
       end
     end
 
-    context "when mark is nil" do
+    context 'when mark is nil' do
       it 'returns 0' do
         expect(Shot.new(nil).score).to eq 0
       end

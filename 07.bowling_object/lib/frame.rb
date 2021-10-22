@@ -27,15 +27,5 @@ class Frame
     first_shot.score + second_shot.score == 10
   end
 
-  def first_shot
-    @first_shot
-  end
-
-  def second_shot
-    @second_shot
-  end
-
-  def third_shot
-    @third_shot
-  end
+  attr_reader :first_shot, :second_shot, :third_shot
 end
