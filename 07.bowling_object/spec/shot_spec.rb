@@ -8,15 +8,15 @@ RSpec.describe Shot do
       end
     end
 
-    context "when mark is '0'" do
-      it 'returns 0' do
-        expect(Shot.new('0').score).to eq 0
-      end
-    end
-
     context "when mark is '5'" do
       it 'returns 5' do
         expect(Shot.new('5').score).to eq 5
+      end
+    end
+
+    context "when mark is nil" do
+      it 'returns 0' do
+        expect(Shot.new(nil).score).to eq 0
       end
     end
   end
