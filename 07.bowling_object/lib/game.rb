@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require './lib/frame'
+
 class Game
   def initialize(input)
     @marks = input.split(',')
@@ -19,16 +23,13 @@ class Game
   def set_frames
     index = 0
     loop do
+      add_frame(Frame.new(*(marks[index..index + 2])))
       increments_frame_count
-      mark = marks[index]
       if frame_count == 10
-        add_frame(Frame.new(*(marks[index..])))
         break
-      elsif mark == 'X'
-        add_frame(Frame.new(mark))
+      elsif marks[index] == 'X'
         index += 1
       else
-        add_frame(Frame.new(marks[index], marks[index + 1]))
         index += 2
       end
     end
