@@ -1,5 +1,5 @@
 example_id                   | status | run_time        |
 ---------------------------- | ------ | --------------- |
-./spec/shot_spec.rb[1:1:1:1] | passed | 0.00005 seconds |
-./spec/shot_spec.rb[1:1:2:1] | passed | 0.00033 seconds |
-./spec/shot_spec.rb[1:1:3:1] | passed | 0.00015 seconds |
+./spec/shot_spec.rb[1:1:1:1] | passed | 0.00008 seconds |
+./spec/shot_spec.rb[1:1:2:1] | passed | 0.00232 seconds |
+./spec/shot_spec.rb[1:1:3:1] | passed | 0.00007 seconds |

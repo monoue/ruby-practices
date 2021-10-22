@@ -1,15 +1,15 @@
 class Shot
-  def initialize(input)
-    @mark = to_mark(input)
+  def initialize(mark)
+    @score = to_score(mark)
   end
 
-  def mark
-    @mark
+  def score
+    @score
   end
 
   private
 
-  def to_mark(input)
-    input == 'X' ? 10 : input.to_i
+  def to_score(mark)
+    mark == 'X' ? 10 : mark.to_i
   end
 end
