@@ -1,0 +1,3 @@
+class Ls
+
+end
