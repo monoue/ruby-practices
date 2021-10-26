@@ -5,7 +5,6 @@ require './lib/frame'
 class Game
   def initialize(input)
     @marks = input.split(',')
-    @frame_count = 0
     @frames = []
   end
 
@@ -22,21 +21,10 @@ class Game
 
   def set_frames
     index = 0
-    loop do
+    while frames.count < 10
       add_frame(Frame.new(*marks[index..index + 2]))
-      increments_frame_count
-      break if frame_count == 10
-
-      index += if marks[index] == 'X'
-                 1
-               else
-                 2
-               end
+      index += marks[index] == 'X' ? 1 : 2
     end
-  end
-
-  def increments_frame_count
-    @frame_count += 1
   end
 
   def add_frame(frame)
