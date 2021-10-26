@@ -5,31 +5,24 @@ require './lib/frame'
 class Game
   def initialize(input)
     @marks = input.split(',')
-    @frames = []
+    @frames = set_frames
   end
-
-  def result
-    set_frames
-    score
-  end
-
-  private
 
   def score
     frames.map(&:score).sum
   end
 
+  private
+
   def set_frames
+    frames = []
     index = 0
     while frames.count < 10
-      add_frame(Frame.new(*marks[index..index + 2]))
+      frames << Frame.new(*marks[index..index + 2])
       index += marks[index] == 'X' ? 1 : 2
     end
+    frames
   end
 
-  def add_frame(frame)
-    @frames << frame
-  end
-
-  attr_reader :frames, :marks, :frame_count
+  attr_reader :frames, :marks
 end
