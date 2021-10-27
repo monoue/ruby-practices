@@ -18,4 +18,8 @@ class LongFormatDirBlock
     total_blocks = long_format_line_infos.map { |info| info.blocks }.sum
     "#{make_total_blocks_line(total_blocks)}#{long_format_block.data}"
   end
+
+  def make_total_blocks_line(total_blocks)
+    "total #{total_blocks}\n"
+  end
 end
