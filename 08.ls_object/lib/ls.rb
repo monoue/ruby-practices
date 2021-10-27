@@ -9,11 +9,18 @@ class Ls
   private
 
   def make_result
-    paths = ClassifyAndSort.classify_and_sort_paths(options[:reverse])
-    noent_block = make_noent_block(paths[:paths_not_exist])
-    body_blocks = make_body_blocks(paths, options)
-    "#{noent_block}#{body_blocks.join('\n')}"
+    path_info = PathInfo.new(option.reverse?)
+    noent_section = make_noent_section(path_info.paths_not_exist)
+    body = Body.new(path_info, option)
+    "#{noent_section}#{body.join('\n')}"
   end
+
+  def make_body(path_info, option)
+    files_block = option.long_format? ? LongFormat.make_long_format_block(path_info.files, '.') : NormalFormat.make_normal_dir_block(path_info.files)
+    dir_blocks = DirBlock.make_dir_blocks(paths[:directories], options)
+    files_block.length.positive? ? dir_blocks.unshift(files_block) : dir_blocks
+  end
+
 
   def make_dir_block(dir_path)
     filenames = init_filenames(dir_path)
@@ -28,32 +35,12 @@ class Ls
     options[:reverse] ? filenames.reverse : filenames
   end
 
-  def classify_and_sort_paths(reverse)
-    paths = classify_paths
-    sort_classified_paths(paths, reverse)
-  end
-
-  def sort_classified_paths(paths, reverse)
-    paths.each_value(&:sort!)
-    if reverse
-      paths[:files].reverse!
-      paths[:directories].reverse!
+  def make_noent_section(paths_not_exist)
+    section = ''
+    paths_not_exist.each do |path|
+      section << "ls: #{path}: No such file or directory\n"
     end
-    paths
-  end
-
-  def classify_paths
-    paths = { files: [], directories: [], paths_not_exist: [] }
-    ARGV.each do |path|
-      if File.file?(path)
-        paths[:files] << path
-      elsif File.directory?(path)
-        paths[:directories] << path
-      else
-        paths[:paths_not_exist] << path
-      end
-    end
-    paths
+    section
   end
 
   attr_reader :option
