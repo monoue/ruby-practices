@@ -1,4 +1,6 @@
 class LongFormatLine
+  attr_reader :data
+
   def initialize(info, width)
     @data = make_long_format_line(info, width)
   end

@@ -1,4 +1,6 @@
-class NormalFormatDirBlock
+require 'io/console'
+
+class NormalFormatBlock
   attr_reader :data
 
   def initialize(filenames)

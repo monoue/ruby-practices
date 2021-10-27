@@ -1,4 +1,4 @@
-module TimeStamp
+class TimeStamp
   attr_reader :data
 
   def initialize(file_mtime)

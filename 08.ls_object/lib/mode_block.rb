@@ -1,4 +1,5 @@
 require 'mac'
+require_relative './permission'
 
 class ModeBlock
   attr_reader :data

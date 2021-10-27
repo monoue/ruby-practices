@@ -1,4 +1,4 @@
-module Permission
+class Permission
   attr_reader :data
 
   def initialize(file_info)

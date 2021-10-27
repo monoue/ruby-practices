@@ -1,6 +1,8 @@
 # frozen_string_literal: false
 
 require 'etc'
+require_relative './mode_block'
+require_relative './time_stamp'
 
 class LongFormatLineInfo
   attr_reader :filename, :mode_block, :nlink, :owner_name, :group_name, :size, :time_stamp, :blocks
