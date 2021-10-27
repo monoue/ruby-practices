@@ -5,6 +5,14 @@ class Body
     @data = make_body(path_info, option)
   end
 
+  def self.make_arr(dir_paths, option)
+    dir_blocks = []
+    dir_paths.each do |dir_path|
+      dir_blocks << Body.new(dir_path, option)
+    end
+    dir_blocks
+  end
+
   private
 
   def make_body(path_info, option)
