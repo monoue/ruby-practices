@@ -5,12 +5,20 @@ class DirBlock
     @data = make_dir_block(dir_path, option)
   end
 
+  def self.make_arr(dir_paths, option)
+    dir_blocks = []
+    dir_paths.each do |dir_path|
+      dir_blocks << DirBlock.new(dir_path, option)
+    end
+    dir_blocks
+  end
+
   private
 
   def make_dir_block(dir_path, option)
     filenames = init_filenames(dir_path, option)
-    dir_block = option.long_format ? LongFormat.make_long_format_dir_block(filenames, dir_path) : NormalFormat.make_normal_dir_block(filenames)
-    ARGV.size > 1 ? "#{make_dir_block_header_line(dir_path)}#{dir_block}" : dir_block
+    dir_block_str = option.long_format ? LongFormatDirBlock.new(filenames, dir_path).data : NormalFormatDirBlock.new(filenames).data
+    ARGV.size > 1 ? "#{make_dir_block_header_line(dir_path)}#{dir_block_str}" : dir_block_str
   end
 
   def make_dir_block_header_line(dir_path)
