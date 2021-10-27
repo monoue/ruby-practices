@@ -3,16 +3,19 @@
 require './lib/frame'
 
 class Game
+  attr_reader :score
+
   def initialize(input)
     @marks = input.split(',')
     @frames = set_frames
-  end
-
-  def score
-    frames.map(&:score).sum
+    @score = set_score
   end
 
   private
+
+  def set_score
+    frames.map(&:score).sum
+  end
 
   def set_frames
     frames = []
