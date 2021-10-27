@@ -9,12 +9,10 @@ class Ls
   private
 
   def make_result
-    return DirSection.new('.') if ARGV.empty?
-    #
-    # paths = ClassifyAndSort.classify_and_sort_paths(options[:reverse])
-    # noent_block = make_noent_block(paths[:paths_not_exist])
-    # body_blocks = make_body_blocks(paths, options)
-    # "#{noent_block}#{body_blocks.join("\n")}"
+    paths = ClassifyAndSort.classify_and_sort_paths(options[:reverse])
+    noent_block = make_noent_block(paths[:paths_not_exist])
+    body_blocks = make_body_blocks(paths, options)
+    "#{noent_block}#{body_blocks.join('\n')}"
   end
 
   def make_dir_block(dir_path)
@@ -28,6 +26,34 @@ class Ls
     filenames = filenames.reject { |filename| filename[0] == '.' } unless options[:all]
     filenames.sort!
     options[:reverse] ? filenames.reverse : filenames
+  end
+
+  def classify_and_sort_paths(reverse)
+    paths = classify_paths
+    sort_classified_paths(paths, reverse)
+  end
+
+  def sort_classified_paths(paths, reverse)
+    paths.each_value(&:sort!)
+    if reverse
+      paths[:files].reverse!
+      paths[:directories].reverse!
+    end
+    paths
+  end
+
+  def classify_paths
+    paths = { files: [], directories: [], paths_not_exist: [] }
+    ARGV.each do |path|
+      if File.file?(path)
+        paths[:files] << path
+      elsif File.directory?(path)
+        paths[:directories] << path
+      else
+        paths[:paths_not_exist] << path
+      end
+    end
+    paths
   end
 
   attr_reader :option

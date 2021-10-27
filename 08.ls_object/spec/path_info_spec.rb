@@ -40,9 +40,9 @@ RSpec.describe PathInfo do # rubocop:disable Metrics/BlockLength
   describe 'directories' do
     context 'without reverse flag' do
       context 'without arguments' do
-        it 'returns an empty array' do
+        it 'returns "."' do
           ARGV = []
-          expect(PathInfo.new(false).directories).to eq []
+          expect(PathInfo.new(false).directories).to eq ['.']
         end
       end
 
