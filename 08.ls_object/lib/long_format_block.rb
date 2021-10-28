@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 require_relative './long_format_line_info'
 require_relative './long_format_line'
 require_relative './width'

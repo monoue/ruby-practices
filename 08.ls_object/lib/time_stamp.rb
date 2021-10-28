@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TimeStamp
   attr_reader :data
 

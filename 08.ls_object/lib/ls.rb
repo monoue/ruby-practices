@@ -33,7 +33,7 @@ class Ls
   end
 
   def make_body_section(body_blocks)
-    body_blocks.map(&:data).join('\n')
+    body_blocks.map(&:data).join("\n")
   end
 
   def make_noent_section(paths_not_exist)

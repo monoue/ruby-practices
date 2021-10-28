@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Width
   attr_reader :nlink, :owner_name, :group_name, :size
 

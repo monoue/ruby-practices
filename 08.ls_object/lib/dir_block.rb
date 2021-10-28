@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './long_format_dir_block'
 require_relative './normal_format_block'
 

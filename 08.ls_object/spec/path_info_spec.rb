@@ -1,27 +1,27 @@
-# frozen_string_literal: true
+#  frozen_string_literal: false
 
 require 'spec_helper'
 
-RSpec.describe PathInfo do # rubocop:disable Metrics/BlockLength
-  describe 'files' do
+RSpec.describe PathInfo do #  rubocop:disable Metrics/BlockLength
+  describe 'files' do #  rubocop:disable Metrics/BlockLength
     context 'without reverse flag' do
       context 'without arguments' do
         it 'returns an empty array' do
-          ARGV = []
+          ARGV = [] # rubocop:disable all
           expect(PathInfo.new(false).files).to eq []
         end
       end
 
       context "when command line argument is 'Gemfile'" do
         it "returns an array including 'Gemfile'" do
-          ARGV = ['Gemfile']
+          ARGV = ['Gemfile'] # rubocop:disable all
           expect(PathInfo.new(false).files).to eq ['Gemfile']
         end
       end
 
       context "when command line argument is 'Gemfile' 'Gemfile.lock' 'lib', 'spec', 'hoge', 'fuga'" do
         it "returns the array ['Gemfile', 'Gemfile.lock']" do
-          ARGV = ['Gemfile', 'Gemfile.lock', 'lib', 'spec', 'hoge', 'fuga']
+          ARGV = ['Gemfile', 'Gemfile.lock', 'lib', 'spec', 'hoge', 'fuga'] # rubocop:disable all
           expect(PathInfo.new(false).files).to eq ['Gemfile', 'Gemfile.lock']
         end
       end
@@ -30,7 +30,7 @@ RSpec.describe PathInfo do # rubocop:disable Metrics/BlockLength
     context 'with reverse flag' do
       context "when command line argument is 'Gemfile' 'Gemfile.lock' 'lib', 'spec', 'hoge', 'fuga'" do
         it "returns the array ['Gemfile.lock', 'Gemfile']" do
-          ARGV = ['Gemfile', 'Gemfile.lock', 'lib', 'spec', 'hoge', 'fuga']
+          ARGV = ['Gemfile', 'Gemfile.lock', 'lib', 'spec', 'hoge', 'fuga'] # rubocop:disable all
           expect(PathInfo.new(true).files).to eq ['Gemfile.lock', 'Gemfile']
         end
       end
@@ -41,15 +41,15 @@ RSpec.describe PathInfo do # rubocop:disable Metrics/BlockLength
     context 'without reverse flag' do
       context 'without arguments' do
         it 'returns "."' do
-          ARGV = []
+          ARGV = [] # rubocop:disable all
           expect(PathInfo.new(false).directories).to eq ['.']
         end
       end
 
       context "when command line argument is 'Gemfile' 'Gemfile.lock' 'lib', 'spec', 'hoge', 'fuga'" do
         it "returns the array ['lib', 'spec']" do
-          ARGV = ['Gemfile', 'Gemfile.lock', 'lib', 'spec', 'hoge', 'fuga']
-          expect(PathInfo.new(false).directories).to eq ['lib', 'spec']
+          ARGV = ['Gemfile', 'Gemfile.lock', 'lib', 'spec', 'hoge', 'fuga'] # rubocop:disable all
+          expect(PathInfo.new(false).directories).to eq %w[lib spec]
         end
       end
     end
@@ -57,8 +57,8 @@ RSpec.describe PathInfo do # rubocop:disable Metrics/BlockLength
     context 'with reverse flag' do
       context "when command line argument is 'Gemfile' 'Gemfile.lock' 'lib', 'spec', 'hoge', 'fuga'" do
         it "returns the array ['spec', 'lib']" do
-          ARGV = ['Gemfile', 'Gemfile.lock', 'lib', 'spec', 'hoge', 'fuga']
-          expect(PathInfo.new(true).directories).to eq ['spec', 'lib']
+          ARGV = ['Gemfile', 'Gemfile.lock', 'lib', 'spec', 'hoge', 'fuga'] # rubocop:disable all
+          expect(PathInfo.new(true).directories).to eq %w[spec lib]
         end
       end
     end
@@ -68,15 +68,15 @@ RSpec.describe PathInfo do # rubocop:disable Metrics/BlockLength
     context 'without reverse flag' do
       context 'without arguments' do
         it 'returns an empty array' do
-          ARGV = []
+          ARGV = [] # rubocop:disable all
           expect(PathInfo.new(false).paths_not_exist).to eq []
         end
       end
 
       context "when command line argument is 'Gemfile' 'Gemfile.lock' 'lib', 'spec', 'hoge', 'fuga'" do
         it "returns the array ['fuga', 'hoge']" do
-          ARGV = ['Gemfile', 'Gemfile.lock', 'lib', 'spec', 'hoge', 'fuga']
-          expect(PathInfo.new(false).paths_not_exist).to eq ['fuga', 'hoge']
+          ARGV = ['Gemfile', 'Gemfile.lock', 'lib', 'spec', 'hoge', 'fuga'] # rubocop:disable all
+          expect(PathInfo.new(false).paths_not_exist).to eq %w[fuga hoge]
         end
       end
     end
@@ -84,8 +84,8 @@ RSpec.describe PathInfo do # rubocop:disable Metrics/BlockLength
     context 'with reverse flag' do
       context "when command line argument is 'Gemfile' 'Gemfile.lock' 'lib', 'spec', 'hoge', 'fuga'" do
         it "returns the array ['fuga', 'hoge']" do
-          ARGV = ['Gemfile', 'Gemfile.lock', 'lib', 'spec', 'hoge', 'fuga']
-          expect(PathInfo.new(false).paths_not_exist).to eq ['fuga', 'hoge']
+          ARGV = ['Gemfile', 'Gemfile.lock', 'lib', 'spec', 'hoge', 'fuga'] # rubocop:disable all
+          expect(PathInfo.new(false).paths_not_exist).to eq %w[fuga hoge]
         end
       end
     end

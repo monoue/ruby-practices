@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PathInfo
   attr_reader :files, :directories, :paths_not_exist
 
