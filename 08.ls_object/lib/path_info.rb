@@ -3,7 +3,7 @@
 class PathInfo
   attr_reader :files, :directories, :paths_not_exist
 
-  def initialize(reverse_flag)
+  def initialize(reverse_flag:)
     @files = []
     @directories = []
     @paths_not_exist = []
