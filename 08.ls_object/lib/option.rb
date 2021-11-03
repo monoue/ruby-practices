@@ -23,6 +23,8 @@ class Option
 
   private
 
+  attr_reader :options
+
   def parse_and_init_options
     opt = OptionParser.new
     options = init_options(opt)
@@ -44,6 +46,4 @@ class Option
     puts e.message
     exit(false)
   end
-
-  attr_reader :options
 end

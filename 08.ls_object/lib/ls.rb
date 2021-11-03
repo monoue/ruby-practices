@@ -18,6 +18,8 @@ class Ls
 
   private
 
+  attr_reader :option
+
   def make_result
     path_info = PathInfo.new(option.reverse?)
     noent_section = make_noent_section(path_info.paths_not_exist)
@@ -43,8 +45,6 @@ class Ls
     end
     section
   end
-
-  attr_reader :option
 end
 
 if __FILE__ == $PROGRAM_NAME # rubocop:disable Style/IfUnlessModifier

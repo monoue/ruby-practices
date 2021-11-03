@@ -12,15 +12,15 @@ RSpec.describe PathInfo do #  rubocop:disable Metrics/BlockLength
         end
       end
 
-      context "when command line argument is 'Gemfile'" do
-        it "returns an array including 'Gemfile'" do
+      context "when command line argument is a file" do
+        it "returns an array containing the file" do
           ARGV = ['Gemfile'] # rubocop:disable all
           expect(PathInfo.new(false).files).to eq ['Gemfile']
         end
       end
 
-      context "when command line argument is 'Gemfile' 'Gemfile.lock' 'lib', 'spec', 'hoge', 'fuga'" do
-        it "returns the array ['Gemfile', 'Gemfile.lock']" do
+      context "when command line arguments include files, directories and non existing paths" do
+        it "returns an array containing only the files which are sorted" do
           ARGV = ['Gemfile', 'Gemfile.lock', 'lib', 'spec', 'hoge', 'fuga'] # rubocop:disable all
           expect(PathInfo.new(false).files).to eq ['Gemfile', 'Gemfile.lock']
         end
@@ -28,8 +28,8 @@ RSpec.describe PathInfo do #  rubocop:disable Metrics/BlockLength
     end
 
     context 'with reverse flag' do
-      context "when command line argument is 'Gemfile' 'Gemfile.lock' 'lib', 'spec', 'hoge', 'fuga'" do
-        it "returns the array ['Gemfile.lock', 'Gemfile']" do
+      context "when command line arguments include files, directories and non existing paths" do
+        it "returns an array containing only the files which are sorted reversely" do
           ARGV = ['Gemfile', 'Gemfile.lock', 'lib', 'spec', 'hoge', 'fuga'] # rubocop:disable all
           expect(PathInfo.new(true).files).to eq ['Gemfile.lock', 'Gemfile']
         end
