@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class LongFormatLine
-  attr_reader :data
+  attr_reader :text
 
   def initialize(info, width)
-    @data = make_long_format_line(info, width)
+    @text = make_long_format_line(info, width)
   end
 
   def make_long_format_line(info, width)

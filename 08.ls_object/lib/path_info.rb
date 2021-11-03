@@ -1,16 +1,19 @@
 # frozen_string_literal: true
 
 class PathInfo
-  attr_reader :files, :directories, :paths_not_exist
+  attr_reader :files, :directories, :non_existent_paths
 
-  def initialize(reverse_flag:)
+  def initialize(reverse_flag:, argv: ARGV)
+    @argv = argv
     @files = []
     @directories = []
-    @paths_not_exist = []
+    @non_existent_paths = []
     classify_and_sort_paths(reverse_flag)
   end
 
   private
+
+  attr_reader :argv
 
   def classify_and_sort_paths(reverse_flag)
     classify_paths
@@ -18,18 +21,18 @@ class PathInfo
   end
 
   def classify_paths
-    if ARGV.empty?
+    if argv.empty?
       directories << '.'
       return
     end
 
-    ARGV.each do |path|
+    argv.each do |path|
       if File.file?(path)
         files << path
       elsif File.directory?(path)
         directories << path
       else
-        paths_not_exist << path
+        non_existent_paths << path
       end
     end
   end
@@ -37,7 +40,7 @@ class PathInfo
   def sort_classified_paths(reverse_flag)
     files.sort!
     directories.sort!
-    paths_not_exist.sort!
+    non_existent_paths.sort!
     return unless reverse_flag
 
     files.reverse!

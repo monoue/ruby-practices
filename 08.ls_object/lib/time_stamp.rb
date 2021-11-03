@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class TimeStamp
-  attr_reader :data
+  attr_reader :text
 
   def initialize(file_mtime)
-    @data = get_time_stamp(file_mtime)
+    @text = get_time_stamp(file_mtime)
   end
 
   private

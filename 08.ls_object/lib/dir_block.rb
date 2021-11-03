@@ -4,10 +4,10 @@ require_relative './long_format_dir_block'
 require_relative './normal_format_block'
 
 class DirBlock
-  attr_reader :data
+  attr_reader :text
 
   def initialize(dir_path, option)
-    @data = make_dir_block(dir_path, option)
+    @text = make_dir_block(dir_path, option)
   end
 
   def self.make_arr(dir_paths, option)
@@ -22,7 +22,7 @@ class DirBlock
 
   def make_dir_block(dir_path, option)
     filenames = init_filenames(dir_path, option)
-    dir_block_str = option.long_format? ? LongFormatDirBlock.new(filenames, dir_path).data : NormalFormatBlock.new(filenames).data
+    dir_block_str = option.long_format? ? LongFormatDirBlock.new(filenames, dir_path).text : NormalFormatBlock.new(filenames).text
     ARGV.size > 1 ? "#{make_dir_block_header_line(dir_path)}#{dir_block_str}" : dir_block_str
   end
 

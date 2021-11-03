@@ -5,7 +5,8 @@
 require 'optparse'
 
 class Option
-  def initialize
+  def initialize(argv: ARGV)
+    @argv = argv
     @options = parse_and_init_options
   end
 
@@ -23,7 +24,7 @@ class Option
 
   private
 
-  attr_reader :options
+  attr_reader :options, :argv
 
   def parse_and_init_options
     opt = OptionParser.new
@@ -41,7 +42,7 @@ class Option
   end
 
   def parse_options(opt)
-    opt.parse!(ARGV)
+    opt.parse!(argv)
   rescue OptionParser::InvalidOption => e
     puts e.message
     exit(false)

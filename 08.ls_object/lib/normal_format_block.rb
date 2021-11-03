@@ -3,10 +3,10 @@
 require 'io/console'
 
 class NormalFormatBlock
-  attr_reader :data
+  attr_reader :text
 
   def initialize(filenames)
-    @data = make_normal_dir_block(filenames)
+    @text = make_normal_dir_block(filenames)
   end
 
   private

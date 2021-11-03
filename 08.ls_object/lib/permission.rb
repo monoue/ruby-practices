@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class Permission
-  attr_reader :data
+  attr_reader :text
 
   def initialize(file_info)
-    @data = get_permission(file_info)
+    @text = get_permission(file_info)
   end
 
   private

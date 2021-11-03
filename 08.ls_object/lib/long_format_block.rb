@@ -5,10 +5,10 @@ require_relative './long_format_line'
 require_relative './width'
 
 class LongFormatBlock
-  attr_reader :data
+  attr_reader :text
 
   def initialize(filenames, dir_path)
-    @data = make_long_format_block(filenames, dir_path)
+    @text = make_long_format_block(filenames, dir_path)
   end
 
   private
@@ -18,7 +18,7 @@ class LongFormatBlock
     width = Width.new(long_format_line_infos)
     str = ''
     long_format_line_infos.each do |info|
-      str << LongFormatLine.new(info, width).data
+      str << LongFormatLine.new(info, width).text
     end
     str
   end

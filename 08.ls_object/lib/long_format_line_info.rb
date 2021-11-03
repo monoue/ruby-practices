@@ -11,19 +11,18 @@ class LongFormatLineInfo
     @filename = filename
     full_path = "#{dir_path}/#{filename}"
     file_info = File.lstat(full_path)
-    @mode_block = ModeBlock.new(file_info, full_path).data
+    @mode_block = ModeBlock.new(file_info, full_path).text
     @nlink = file_info.nlink
     @owner_name = get_owner_name(file_info)
     @group_name = get_group_name(file_info)
     @size = file_info.size
-    @time_stamp = TimeStamp.new(file_info.mtime).data
+    @time_stamp = TimeStamp.new(file_info.mtime).text
     @blocks = file_info.blocks
   end
 
   def self.make_arr(filenames, dir_path)
     long_format_line_infos = []
     filenames.each do |filename|
-      # TODO: 違う書き方で new できるか探る
       long_format_line_infos << LongFormatLineInfo.new(filename, dir_path)
     end
     long_format_line_infos
