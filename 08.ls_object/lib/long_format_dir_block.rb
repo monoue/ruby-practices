@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './long_format_line_info'
+require_relative './file_status'
 require_relative './long_format_block'
 
 class LongFormatDirBlock
@@ -14,7 +14,7 @@ class LongFormatDirBlock
     return '' if filenames.size <= 0
 
     long_format_block = LongFormatBlock.new(filenames, dir_path)
-    long_format_line_infos = LongFormatLineInfo.make_arr(filenames, dir_path)
+    long_format_line_infos = FileStatus.make_arr(filenames, dir_path)
     total_blocks = long_format_line_infos.map(&:blocks).sum
     "#{make_total_blocks_line(total_blocks)}#{long_format_block.text}"
   end

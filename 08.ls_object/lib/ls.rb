@@ -23,7 +23,7 @@ class Ls
   def make_body_blocks(path_info, option)
     files_block = option.long_format? ? LongFormatBlock.new(path_info.files, '.') : NormalFormatBlock.new(path_info.files)
     dir_blocks = DirBlock.make_arr(path_info.directories, option)
-    files_block.text.length.positive? ? dir_blocks.unshift(files_block) : dir_blocks
+    files_block.text.empty? ? dir_blocks : dir_blocks.unshift(files_block)
   end
 
   def make_body_section(body_blocks)

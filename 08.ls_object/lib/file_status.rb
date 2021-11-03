@@ -4,7 +4,7 @@ require 'etc'
 require_relative './mode_block'
 require_relative './time_stamp'
 
-class LongFormatLineInfo
+class FileStatus
   attr_reader :filename, :mode_block, :nlink, :owner_name, :group_name, :size, :time_stamp, :blocks
 
   def initialize(filename, dir_path)
@@ -23,7 +23,7 @@ class LongFormatLineInfo
   def self.make_arr(filenames, dir_path)
     long_format_line_infos = []
     filenames.each do |filename|
-      long_format_line_infos << LongFormatLineInfo.new(filename, dir_path)
+      long_format_line_infos << FileStatus.new(filename, dir_path)
     end
     long_format_line_infos
   end
