@@ -6,28 +6,26 @@ class EntireFileStatusWidth
   end
 
   def nlink
-    file_statuses.map { |info| count_digits(info.nlink) }.max
+    get_status_max_width(Proc.new { |file_status| file_status.nlink.to_s })
   end
 
   def owner_name
-    file_statuses.map { |info| info.owner_name.length }.max
+    get_status_max_width(Proc.new { |file_status| file_status.owner_name})
   end
 
   def group_name
-    file_statuses.map { |info| info.group_name.length }.max
+    get_status_max_width(Proc.new { |file_status| file_status.group_name })
   end
 
   def size
-    file_statuses.map { |info| count_digits(info.size) }.max
+    get_status_max_width(Proc.new { |file_status| file_status.size.to_s })
   end
 
   private
 
   attr_reader :file_statuses
 
-  def count_digits(num)
-    Math.log10(num.abs).to_i + 1
-  rescue FloatDomainError
-    1
+  def get_status_max_width(method)
+    file_statuses.map { |file_status| method.call(file_status).size }.max
   end
 end
