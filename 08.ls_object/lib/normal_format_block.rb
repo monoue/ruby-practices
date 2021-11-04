@@ -3,15 +3,11 @@
 require 'io/console'
 
 class NormalFormatBlock
-  attr_reader :text
-
   def initialize(filenames)
-    @text = make_normal_dir_block(filenames)
+    @filenames = filenames
   end
 
-  private
-
-  def make_normal_dir_block(filenames)
+  def text
     return '' if filenames.size <= 0
 
     width_for_filename = get_width_for_filename(filenames)
@@ -26,6 +22,10 @@ class NormalFormatBlock
     end
     str
   end
+
+  private
+
+  attr_reader :filenames
 
   def count_multibyte_chars(str)
     str.chars.count { |char| !char.ascii_only? }

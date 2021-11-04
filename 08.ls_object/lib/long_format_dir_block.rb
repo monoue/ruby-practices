@@ -4,13 +4,12 @@ require_relative './file_status'
 require_relative './long_format_block'
 
 class LongFormatDirBlock
-  attr_reader :text
-
   def initialize(filenames:, dir_path:)
-    @text = make_long_format_dir_block(filenames, dir_path)
+    @filenames = filenames
+    @dir_path = dir_path
   end
 
-  def make_long_format_dir_block(filenames, dir_path)
+  def text
     return '' if filenames.size <= 0
 
     long_format_block = LongFormatBlock.new(filenames: filenames, dir_path: dir_path)
@@ -18,6 +17,10 @@ class LongFormatDirBlock
     total_blocks = long_format_line_infos.map(&:blocks).sum
     "#{make_total_blocks_line(total_blocks)}#{long_format_block.text}"
   end
+
+  private
+
+  attr_reader :filenames, :dir_path
 
   def make_total_blocks_line(total_blocks)
     "total #{total_blocks}\n"

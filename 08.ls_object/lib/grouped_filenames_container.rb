@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PathInfo
+class GroupedFilenamesContainer
   attr_reader :files, :directories, :non_existent_paths
 
   def initialize(reverse_flag:, argv: ARGV)

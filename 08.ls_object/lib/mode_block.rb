@@ -4,17 +4,18 @@ require 'mac'
 require_relative './permission'
 
 class ModeBlock
-  attr_reader :text
-
   def initialize(file_info, filename)
-    @text = get_mode_block(file_info, filename)
+    @file_info = file_info
+    @filename = filename
+  end
+
+  def text
+    "#{get_file_type(file_info)}#{Permission.new(file_info).text}#{Mac.new.attr(filename)}"
   end
 
   private
 
-  def get_mode_block(file_info, filename)
-    "#{get_file_type(file_info)}#{Permission.new(file_info).text}#{Mac.new.attr(filename)}"
-  end
+  attr_reader :file_info, :filename
 
   def get_file_type(file_info)
     return 'b' if file_info.blockdev?

@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
 class TimeStamp
-  attr_reader :text
-
   def initialize(file_mtime)
-    @text = get_time_stamp(file_mtime)
+    @file_mtime = file_mtime
   end
 
-  private
-
-  def get_time_stamp(file_mtime)
+  def text
     month = format '%2d', file_mtime.month
     day = format '%2d', file_mtime.day
     time_or_year = get_time_or_year(file_mtime)
     "#{month} #{day} #{time_or_year}"
   end
+
+  private
+
+  attr_reader :file_mtime
 
   def recent?(file_mtime)
     return false if file_mtime > Time.now

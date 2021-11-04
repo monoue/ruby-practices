@@ -5,28 +5,43 @@ require_relative './mode_block'
 require_relative './time_stamp'
 
 class FileStatus
-  attr_reader :filename, :mode_block, :nlink, :owner_name, :group_name, :size, :time_stamp, :blocks
+  attr_reader :filename
 
   def initialize(filename:, dir_path:)
     @filename = filename
-    full_path = "#{dir_path}/#{filename}"
-    file_status = File.lstat(full_path)
-    @mode_block = ModeBlock.new(file_status, full_path).text
-    @nlink = file_status.nlink
-    @owner_name = get_owner_name(file_status)
-    @group_name = get_group_name(file_status)
-    @size = file_status.size
-    @time_stamp = TimeStamp.new(file_status.mtime).text
-    @blocks = file_status.blocks
+    @full_path = "#{dir_path}/#{filename}"
+    @file_status = File.lstat(full_path)
+  end
+
+  def mode_block
+    ModeBlock.new(file_status, full_path).text
+  end
+
+  def nlink
+    file_status.nlink
+  end
+
+  def owner_name
+    Etc.getpwuid(file_status.uid).name
+  end
+
+  def group_name
+    Etc.getgrgid(file_status.gid).name
+  end
+
+  def size
+    file_status.size
+  end
+
+  def time_stamp
+    TimeStamp.new(file_status.mtime).text
+  end
+
+  def blocks
+    file_status.blocks
   end
 
   private
 
-  def get_owner_name(file_status)
-    Etc.getpwuid(file_status.uid).name
-  end
-
-  def get_group_name(file_status)
-    Etc.getgrgid(file_status.gid).name
-  end
+  attr_reader :full_path, :file_status
 end

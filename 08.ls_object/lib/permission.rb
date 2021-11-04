@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
 class Permission
-  attr_reader :text
-
   def initialize(file_info)
-    @text = get_permission(file_info)
+    @file_info = file_info
   end
 
-  private
-
-  def get_permission(file_info)
+  def text
     mode_octal = file_info.mode.to_s(8)
     permission_strs = {}
     permission_strs[:owner] = get_owner_or_group_permission(mode_octal[-3].to_i.to_s(2), file_info.setuid?)
@@ -17,6 +13,10 @@ class Permission
     permission_strs[:other] = get_other_permission(mode_octal[-1].to_i.to_s(2), file_info.sticky?)
     permission_strs.values.join
   end
+
+  private
+
+  attr_reader :file_info
 
   def char_bit_set?(char)
     char == '1'
