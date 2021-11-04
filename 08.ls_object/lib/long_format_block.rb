@@ -14,11 +14,11 @@ class LongFormatBlock
   private
 
   def make_long_format_block(filenames, dir_path)
-    long_format_line_infos = filenames.map { |filename| FileStatus.new(filename: filename, dir_path: dir_path) }
-    width = Width.new(long_format_line_infos)
+    file_statuses = filenames.map { |filename| FileStatus.new(filename: filename, dir_path: dir_path) }
+    width = Width.new(file_statuses)
     str = ''
-    long_format_line_infos.each do |info|
-      str << LongFormatLine.new(info, width).text
+    file_statuses.each do |file_status|
+      str << LongFormatLine.new(file_status: file_status, width: width).text
     end
     str
   end

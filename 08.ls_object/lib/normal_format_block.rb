@@ -14,13 +14,13 @@ class NormalFormatBlock
   def make_normal_dir_block(filenames)
     return '' if filenames.size <= 0
 
-    width_for_elem = get_width_for_elem(filenames)
-    elems_num_per_line = IO.console.winsize[1] / width_for_elem
-    rows_num = (filenames.size / elems_num_per_line.to_f).ceil
+    width_for_filename = get_width_for_filename(filenames)
+    filenames_num_per_line = IO.console.winsize[1] / width_for_filename
+    rows_num = (filenames.size / filenames_num_per_line.to_f).ceil
     str = ''
     (0...rows_num).each do |current_row|
       current_row.step(filenames.size - 1, rows_num) do |i|
-        str << format('%-*s', width_for_elem - count_multibyte_chars(filenames[i]), filenames[i])
+        str << format('%-*s', width_for_filename - count_multibyte_chars(filenames[i]), filenames[i])
       end
       str.rstrip! << "\n"
     end
@@ -35,7 +35,7 @@ class NormalFormatBlock
     str.length + count_multibyte_chars(str) * 2
   end
 
-  def get_width_for_elem(filenames)
+  def get_width_for_filename(filenames)
     filenames.map { |filename| strlen_multibyte(filename) }.max + 1
   end
 end
