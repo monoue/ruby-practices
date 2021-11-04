@@ -6,19 +6,19 @@ class EntireFileStatusWidth
   end
 
   def nlink
-    get_status_max_width(Proc.new { |file_status| file_status.nlink.to_s })
+    get_status_max_width(proc { |file_status| file_status.nlink.to_s })
   end
 
   def owner_name
-    get_status_max_width(Proc.new { |file_status| file_status.owner_name})
+    get_status_max_width(proc { |file_status| file_status.owner_name })
   end
 
   def group_name
-    get_status_max_width(Proc.new { |file_status| file_status.group_name })
+    get_status_max_width(proc { |file_status| file_status.group_name })
   end
 
   def size
-    get_status_max_width(Proc.new { |file_status| file_status.file_size.to_s })
+    get_status_max_width(proc { |file_status| file_status.file_size.to_s })
   end
 
   private

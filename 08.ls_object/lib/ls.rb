@@ -6,36 +6,45 @@ require_relative './option'
 require_relative './grouped_filenames_container'
 require_relative './long_format_block'
 require_relative './normal_format_block'
-require_relative './dir_block'
+require_relative './directory_block'
 
 class Ls
+  def initialize(argv: ARGV)
+    @argv = argv
+    @option = Option.new(argv: argv)
+  end
+
   def put_result
-    option = Option.new
-    path_info = GroupedFilenamesContainer.new(reverse_flag: option.reverse?)
-    non_existent_path_section = make_non_existent_path_section(path_info.non_existent_paths)
-    body_blocks = make_body_blocks(path_info, option)
-    body_section = make_body_section(body_blocks)
-    puts "#{non_existent_path_section}#{body_section}"
+    warn non_existent_paths_section
+    puts body_section
+  end
+
+  def result
+    non_existent_paths_section + body_section
+  end
+
+  def body_section
+    files_block = if option.long_format?
+                    LongFormatBlock.new(filenames: grouped_filenames_container.files,
+                                        directory_path: '.')
+                  else
+                    NormalFormatBlock.new(grouped_filenames_container.files)
+                  end
+    dir_blocks = grouped_filenames_container.directories.map { |dir_path| DirectoryBlock.new(directory_path: dir_path, option: option) }
+    body_blocks = files_block.text.empty? ? dir_blocks : dir_blocks.unshift(files_block)
+    body_blocks.map(&:text).join("\n")
+  end
+
+  def non_existent_paths_section
+    grouped_filenames_container.non_existent_paths.map { |path| "ls: #{path}: No such file or directory" }.join("\n")
   end
 
   private
 
-  def make_body_blocks(path_info, option)
-    files_block = option.long_format? ? LongFormatBlock.new(filenames: path_info.files, dir_path: '.') : NormalFormatBlock.new(path_info.files)
-    dir_blocks = path_info.directories.map { |dir_path| DirBlock.new(dir_path: dir_path, option: option) }
-    files_block.text.empty? ? dir_blocks : dir_blocks.unshift(files_block)
-  end
+  attr_reader :argv, :option
 
-  def make_body_section(body_blocks)
-    body_blocks.map(&:text).join("\n")
-  end
-
-  def make_non_existent_path_section(paths_not_exist)
-    section = ''
-    paths_not_exist.each do |path|
-      section << "ls: #{path}: No such file or directory\n"
-    end
-    section
+  def grouped_filenames_container
+    GroupedFilenamesContainer.new(reverse_flag: option.reverse?, argv: option.argv)
   end
 end
 

@@ -7,9 +7,9 @@ require_relative './time_stamp'
 class FileStatus
   attr_reader :filename
 
-  def initialize(filename:, dir_path:)
+  def initialize(filename:, directory_path:)
     @filename = filename
-    @full_path = "#{dir_path}/#{filename}"
+    @full_path = "#{directory_path}/#{filename}"
     @file_status = File.lstat(full_path)
   end
 

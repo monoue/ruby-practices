@@ -5,18 +5,18 @@ require_relative './long_format_line'
 require_relative './entire_file_status_width'
 
 class LongFormatBlock
-  def initialize(filenames:, dir_path:)
+  def initialize(filenames:, directory_path:)
     @filenames = filenames
-    @dir_path = dir_path
+    @directory_path = directory_path
   end
 
   def text
-    file_statuses = filenames.map { |filename| FileStatus.new(filename: filename, dir_path: dir_path) }
+    file_statuses = filenames.map { |filename| FileStatus.new(filename: filename, directory_path: directory_path) }
     entire_file_status_width = EntireFileStatusWidth.new(file_statuses)
-    file_statuses.map { |file_status| LongFormatLine.new(file_status: file_status, entire_file_status_width: entire_file_status_width).text}.join
+    file_statuses.map { |file_status| LongFormatLine.new(file_status: file_status, entire_file_status_width: entire_file_status_width).text }.join
   end
 
   private
 
-  attr_reader :filenames, :dir_path
+  attr_reader :filenames, :directory_path
 end
