@@ -29,7 +29,7 @@ class FileStatus
     Etc.getgrgid(file_status.gid).name
   end
 
-  def size
+  def file_size
     file_status.size
   end
 

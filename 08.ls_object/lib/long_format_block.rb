@@ -12,8 +12,8 @@ class LongFormatBlock
 
   def text
     file_statuses = filenames.map { |filename| FileStatus.new(filename: filename, dir_path: dir_path) }
-    width = EntireFileStatusWidth.new(file_statuses)
-    file_statuses.map { |file_status| LongFormatLine.new(file_status: file_status, width: width).text}.join
+    entire_file_status_width = EntireFileStatusWidth.new(file_statuses)
+    file_statuses.map { |file_status| LongFormatLine.new(file_status: file_status, entire_file_status_width: entire_file_status_width).text}.join
   end
 
   private
