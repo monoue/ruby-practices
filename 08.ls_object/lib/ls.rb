@@ -15,8 +15,8 @@ class Ls
   end
 
   def put_result
-    warn non_existent_paths_section
-    puts body_section
+    warn non_existent_paths_section unless non_existent_paths_section.empty?
+    puts body_section unless body_section.empty?
   end
 
   def result
