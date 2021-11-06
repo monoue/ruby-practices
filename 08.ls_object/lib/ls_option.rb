@@ -4,7 +4,7 @@
 
 require 'optparse'
 
-class Option
+class LsOption
   attr_reader :argv
 
   def initialize(argv: ARGV)

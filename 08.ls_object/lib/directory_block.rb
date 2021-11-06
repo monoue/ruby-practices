@@ -4,9 +4,9 @@ require_relative './long_format_dir_block'
 require_relative './normal_format_block'
 
 class DirectoryBlock
-  def initialize(directory_path:, option:)
+  def initialize(directory_path:, ls_option:)
     @directory_path = directory_path
-    @option = option
+    @option = ls_option
   end
 
   def text

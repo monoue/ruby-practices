@@ -4,42 +4,52 @@ require 'spec_helper'
 require 'open3'
 
 RSpec.describe Ls do # rubocop:disable Metrics/BlockLength
-  describe 'result' do # rubocop:disable Metrics/BlockLength
+  describe 'build_results' do # rubocop:disable Metrics/BlockLength
+    def compare_results(command_line_argument)
+      command_line_arguments = command_line_argument.split(' ')
+      warning_message, normal_result = Ls.new(argv: command_line_arguments.dup).build_results
+      cmd = ['ls', *command_line_arguments].join(' ')
+      stdout, stderr, = Open3.capture3(cmd)
+      expect(warning_message).to eq stderr.chomp
+      expect(normal_result).to eq stdout
+    end
+
     context 'without arguments' do
       it 'outputs the same result as the output of ls command with the condition' do
-        argv = []
-        expect("#{Ls.new(argv: argv).result.split(' ').join("\n")}\n").to eq `ls`
+        warning_message, normal_result = Ls.new(argv: []).build_results
+        stdout, stderr, = Open3.capture3('ls')
+        expect(normal_result.split(' ').join("\n")).to eq stdout.chomp
+        expect(warning_message).to eq stderr
       end
     end
 
-    context 'with option -l' do
+    context 'with option "-l"' do
       it 'outputs the same result as the output of ls command with the condition' do
-        argv = ['-l']
-        expect(Ls.new(argv: argv).result).to eq `ls -l`
+        compare_results('-l')
       end
     end
 
-    context 'with option -lra' do
+    context 'with option "-lra"' do
       it 'outputs the same result as the output of ls command with the condition' do
-        argv = ['-lra']
-        expect(Ls.new(argv: argv).result).to eq `ls -lra`
+        compare_results('-lra')
+      end
+    end
+
+    context 'with option "-l -r -a"' do
+      it 'outputs the same result as the output of ls command with the condition' do
+        compare_results('-l -r -a')
       end
     end
 
     context 'with option -lra and directories for command line arguments' do
       it 'outputs the same result as the output of ls command with the condition' do
-        argv = ['-lra', 'spec', 'lib']
-        expect(Ls.new(argv: argv).result).to eq `ls -lra spec lib`
+        compare_results('-l -r -a spec lib')
       end
     end
 
     context 'with option -lra, files, directories and non-existent paths for command line arguments' do
       it 'outputs the same result as the output of ls command with the condition' do
-        argv = ['-lra', 'Gemfile', 'Gemfile.lock', 'spec', 'lib', 'hoge', 'fuga']
-        cmd = 'ls -lra Gemfile Gemfile.lock spec lib hoge fuga'
-        stdout, stderr, = Open3.capture3(cmd)
-        expect(Ls.new(argv: argv).body_section).to eq stdout
-        expect("#{Ls.new(argv: argv).non_existent_paths_section}\n").to eq stderr
+        compare_results('-lra Gemfile Gemfile.lock spec lib hoge fuga ')
       end
     end
   end
