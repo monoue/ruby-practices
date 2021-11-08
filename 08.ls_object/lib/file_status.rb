@@ -13,7 +13,7 @@ class FileStatus
     @lstat = File.lstat(full_path)
   end
 
-  def mode_block
+  def mode
     FileMode.new(lstat, full_path).to_s
   end
 

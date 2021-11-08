@@ -3,7 +3,7 @@
 require_relative './file_status'
 require_relative './long_format_files_section'
 
-class LongFormatDirBlock
+class LongFormatDirectorySection
   def initialize(filenames:, directory_path:)
     @filenames = filenames
     @directory_path = directory_path
