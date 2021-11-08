@@ -3,48 +3,37 @@
 class GroupedFilenamesContainer
   attr_reader :files, :directories, :non_existent_paths
 
-  # filenames のデフォルト値は
-  def initialize(reverse_flag:, filenames: ARGV)
-    @filenames = filenames
-    @files = []
-    @directories = []
-    @non_existent_paths = []
-    classify_and_sort_paths(reverse_flag)
+  def initialize(reverse_flag:, filenames:)
+    classified_paths = classify_paths(filenames)
+    @files, @directories, @non_existent_paths = sort_paths(classified_paths, reverse_flag)
   end
 
   private
 
-  attr_reader :filenames
-
-  def classify_and_sort_paths(reverse_flag)
-    classify_paths
-    sort_classified_paths(reverse_flag)
-  end
-
-  def classify_paths
+  def classify_paths(filenames)
+    paths = { files: [], directories: [], non_existent_paths: [] }
     if filenames.empty?
-      directories << '.'
-      return
-    end
-
-    filenames.each do |path|
-      if File.file?(path)
-        files << path
-      elsif File.directory?(path)
-        directories << path
-      else
-        non_existent_paths << path
+      paths[:directories] << '.'
+    else
+      filenames.each do |path|
+        if File.file?(path)
+          paths[:files] << path
+        elsif File.directory?(path)
+          paths[:directories] << path
+        else
+          paths[:non_existent_paths] << path
+        end
       end
     end
+    paths
   end
 
-  def sort_classified_paths(reverse_flag)
-    files.sort!
-    directories.sort!
-    non_existent_paths.sort!
-    return unless reverse_flag
-
-    files.reverse!
-    directories.reverse!
+  def sort_paths(paths, reverse_flag)
+    paths.each_value(&:sort!)
+    if reverse_flag
+      paths[:files].reverse!
+      paths[:directories].reverse!
+    end
+    paths.values
   end
 end

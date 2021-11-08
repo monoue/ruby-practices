@@ -43,7 +43,7 @@ class Ls
   attr_reader :ls_option, :grouped_filenames_container
 end
 
-if __FILE__ == $PROGRAM_NAME # rubocop:disable Style/IfUnlessModifier
+if __FILE__ == $PROGRAM_NAME
   warning_message, normal_result = Ls.new.build_results
   warn warning_message unless warning_message.empty?
   puts normal_result unless normal_result.empty?
