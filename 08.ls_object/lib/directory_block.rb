@@ -6,23 +6,23 @@ require_relative './normal_format_block'
 class DirectoryBlock
   def initialize(directory_path:, ls_option:)
     @directory_path = directory_path
-    @option = ls_option
+    @ls_option = ls_option
   end
 
   def text
-    filenames = init_filenames(directory_path, option)
-    dir_block_str = if option.long_format?
+    filenames = init_filenames(directory_path, ls_option)
+    dir_block_str = if ls_option.long_format?
                       LongFormatDirBlock.new(filenames: filenames,
                                              directory_path: directory_path).text
                     else
                       NormalFormatBlock.new(filenames).text
                     end
-    option.argv.size > 1 ? "#{make_dir_block_header_line(directory_path)}#{dir_block_str}" : dir_block_str
+    ls_option.filenames.size > 1 ? "#{make_dir_block_header_line(directory_path)}#{dir_block_str}" : dir_block_str
   end
 
   private
 
-  attr_reader :directory_path, :option
+  attr_reader :directory_path, :ls_option
 
   def make_dir_block_header_line(directory_path)
     "#{directory_path}:\n"

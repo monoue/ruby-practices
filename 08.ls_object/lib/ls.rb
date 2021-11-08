@@ -9,14 +9,16 @@ require_relative './normal_format_block'
 require_relative './directory_block'
 
 class Ls
-  def initialize(argv: ARGV)
-    @ls_option = LsOption.new(argv: argv)
-    @grouped_filenames_container = GroupedFilenamesContainer.new(reverse_flag: ls_option.reverse?, argv: ls_option.argv)
+  def initialize(command_line_arguments: ARGV)
+    @ls_option = LsOption.new(command_line_arguments: command_line_arguments)
+    @grouped_filenames_container = GroupedFilenamesContainer.new(reverse_flag: ls_option.reverse?, argv: ls_option.filenames)
   end
 
   def build_results
     [build_warning_message, build_normal_result]
   end
+
+  private
 
   def build_normal_result
     files_block = if ls_option.long_format?
@@ -37,8 +39,6 @@ class Ls
       "ls: #{path}: No such file or directory"
     end.join("\n")
   end
-
-  private
 
   attr_reader :ls_option, :grouped_filenames_container
 end

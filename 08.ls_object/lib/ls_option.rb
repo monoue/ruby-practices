@@ -5,48 +5,35 @@
 require 'optparse'
 
 class LsOption
-  attr_reader :argv
+  attr_reader :filenames
 
-  def initialize(argv: ARGV)
-    @argv = argv
-    @options = parse_and_init_options
+  def initialize(command_line_arguments: ARGV)
+    option_parser = OptionParser.new
+    @options = init_options(option_parser)
+    @filenames = option_parser.parse(command_line_arguments)
   end
 
   def reverse?
-    options[:reverse] == true
+    options[:reverse]
   end
 
   def long_format?
-    options[:long_format] == true
+    options[:long_format]
   end
 
   def all?
-    options[:all] == true
+    options[:all]
   end
 
   private
 
   attr_reader :options
 
-  def parse_and_init_options
-    opt = OptionParser.new
-    options = init_options(opt)
-    parse_options(opt)
-    options
-  end
-
-  def init_options(opt)
-    options = {}
-    opt.on('-a') { options[:all] = true }
-    opt.on('-l') { options[:long_format] = true }
-    opt.on('-r') { options[:reverse] = true }
-    options
-  end
-
-  def parse_options(opt)
-    opt.parse!(argv)
-  rescue OptionParser::InvalidOption => e
-    puts e.message
-    exit(false)
+  def init_options(option_parser)
+    initialized_options = {}
+    option_parser.on('-a') { initialized_options[:all] = true }
+    option_parser.on('-l') { initialized_options[:long_format] = true }
+    option_parser.on('-r') { initialized_options[:reverse] = true }
+    initialized_options
   end
 end
