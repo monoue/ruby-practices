@@ -7,7 +7,7 @@ class NormalFormatBlock
     @filenames = filenames
   end
 
-  def text
+  def to_s
     return '' if filenames.empty?
 
     width_for_filename = get_width_for_filename(filenames)

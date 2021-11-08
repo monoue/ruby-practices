@@ -10,10 +10,17 @@ class LongFormatBlock
     @directory_path = directory_path
   end
 
-  def text
-    file_statuses = filenames.map { |filename| FileStatus.new(filename: filename, directory_path: directory_path) }
+  def to_s
+    file_statuses = filenames.map do |filename|
+      FileStatus.new(filename: filename, directory_path: directory_path)
+    end
     entire_file_status_width = EntireFileStatusWidth.new(file_statuses)
-    file_statuses.map { |file_status| LongFormatLine.new(file_status: file_status, entire_file_status_width: entire_file_status_width).text }.join
+    file_statuses.map do |file_status|
+      LongFormatLine.new(
+        file_status: file_status,
+        entire_file_status_width: entire_file_status_width
+      ).to_s
+    end.join
   end
 
   private

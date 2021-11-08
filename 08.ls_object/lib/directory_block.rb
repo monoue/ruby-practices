@@ -9,13 +9,13 @@ class DirectoryBlock
     @ls_option = ls_option
   end
 
-  def text
+  def to_s
     filenames = init_filenames(directory_path, ls_option)
     dir_block_str = if ls_option.long_format?
                       LongFormatDirBlock.new(filenames: filenames,
-                                             directory_path: directory_path).text
+                                             directory_path: directory_path).to_s
                     else
-                      NormalFormatBlock.new(filenames).text
+                      NormalFormatBlock.new(filenames).to_s
                     end
     ls_option.filenames.size > 1 ? "#{make_dir_block_header_line(directory_path)}#{dir_block_str}" : dir_block_str
   end

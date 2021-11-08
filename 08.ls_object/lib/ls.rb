@@ -30,8 +30,8 @@ class Ls
     dir_blocks = grouped_filenames_container.directories.map do |dir_path|
       DirectoryBlock.new(directory_path: dir_path, ls_option: ls_option)
     end
-    body_blocks = files_block.text.empty? ? dir_blocks : dir_blocks.unshift(files_block)
-    body_blocks.map(&:text).join("\n")
+    body_blocks = files_block.to_s.empty? ? dir_blocks : dir_blocks.unshift(files_block)
+    body_blocks.map(&:to_s).join("\n")
   end
 
   def build_warning_message

@@ -5,7 +5,7 @@ class TimeStamp
     @file_mtime = file_mtime
   end
 
-  def text
+  def to_s
     month = format '%2d', file_mtime.month
     day = format '%2d', file_mtime.day
     time_or_year = get_time_or_year(file_mtime)
