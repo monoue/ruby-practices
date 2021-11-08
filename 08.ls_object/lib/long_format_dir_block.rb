@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './file_status'
-require_relative './long_format_block'
+require_relative './long_format_files_section'
 
 class LongFormatDirBlock
   def initialize(filenames:, directory_path:)
@@ -12,7 +12,7 @@ class LongFormatDirBlock
   def to_s
     return '' if filenames.size <= 0
 
-    long_format_block = LongFormatBlock.new(filenames: filenames, directory_path: directory_path)
+    long_format_block = LongFormatFilesSection.new(filenames: filenames, directory_path: directory_path)
     long_format_line_infos = filenames.map { |filename| FileStatus.new(filename: filename, directory_path: directory_path) }
     total_blocks = long_format_line_infos.map(&:blocks).sum
     make_total_blocks_line(total_blocks) + long_format_block.to_s

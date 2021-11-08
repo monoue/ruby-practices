@@ -2,7 +2,7 @@
 
 require 'io/console'
 
-class NormalFormatBlock
+class NormalFormatFilesSection
   def initialize(filenames)
     @filenames = filenames
   end

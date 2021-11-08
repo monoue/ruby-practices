@@ -4,7 +4,7 @@ require_relative './file_status'
 require_relative './long_format_line'
 require_relative './entire_file_status_width'
 
-class LongFormatBlock
+class LongFormatFilesSection
   def initialize(filenames:, directory_path:)
     @filenames = filenames
     @directory_path = directory_path
