@@ -3,7 +3,7 @@
 require 'mac'
 require_relative './permission'
 
-class ModeBlock
+class FileMode
   def initialize(file_lstat, full_path)
     @file_lstat = file_lstat
     @full_path = full_path

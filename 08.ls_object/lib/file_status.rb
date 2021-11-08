@@ -1,7 +1,7 @@
 # frozen_string_literal: false
 
 require 'etc'
-require_relative './mode_block'
+require_relative './file_mode'
 require_relative './time_stamp'
 
 class FileStatus
@@ -14,7 +14,7 @@ class FileStatus
   end
 
   def mode_block
-    ModeBlock.new(lstat, full_path).to_s
+    FileMode.new(lstat, full_path).to_s
   end
 
   def nlink
