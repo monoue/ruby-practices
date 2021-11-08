@@ -11,7 +11,7 @@ require_relative './directory_block'
 class Ls
   def initialize(command_line_arguments: ARGV)
     @ls_option = LsOption.new(command_line_arguments: command_line_arguments)
-    @grouped_filenames_container = GroupedFilenamesContainer.new(reverse_flag: ls_option.reverse?, argv: ls_option.filenames)
+    @grouped_filenames_container = GroupedFilenamesContainer.new(reverse_flag: ls_option.reverse?, filenames: ls_option.filenames)
   end
 
   def build_results

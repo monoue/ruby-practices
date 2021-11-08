@@ -3,8 +3,9 @@
 class GroupedFilenamesContainer
   attr_reader :files, :directories, :non_existent_paths
 
-  def initialize(reverse_flag:, argv: ARGV)
-    @argv = argv
+  # filenames のデフォルト値は
+  def initialize(reverse_flag:, filenames: ARGV)
+    @filenames = filenames
     @files = []
     @directories = []
     @non_existent_paths = []
@@ -13,7 +14,7 @@ class GroupedFilenamesContainer
 
   private
 
-  attr_reader :argv
+  attr_reader :filenames
 
   def classify_and_sort_paths(reverse_flag)
     classify_paths
@@ -21,12 +22,12 @@ class GroupedFilenamesContainer
   end
 
   def classify_paths
-    if argv.empty?
+    if filenames.empty?
       directories << '.'
       return
     end
 
-    argv.each do |path|
+    filenames.each do |path|
       if File.file?(path)
         files << path
       elsif File.directory?(path)
