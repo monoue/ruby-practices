@@ -15,7 +15,7 @@ class LongFormatDirBlock
     long_format_block = LongFormatBlock.new(filenames: filenames, directory_path: directory_path)
     long_format_line_infos = filenames.map { |filename| FileStatus.new(filename: filename, directory_path: directory_path) }
     total_blocks = long_format_line_infos.map(&:blocks).sum
-    "#{make_total_blocks_line(total_blocks)}#{long_format_block.to_s}"
+    make_total_blocks_line(total_blocks) + long_format_block.to_s
   end
 
   private

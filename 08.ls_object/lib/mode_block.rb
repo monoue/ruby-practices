@@ -10,28 +10,21 @@ class ModeBlock
   end
 
   def to_s
-    get_file_type(file_lstat) + Permission.new(file_lstat).to_s + Mac.new.attr(full_path)
+    FILE_TYPE_CHAR[file_lstat.ftype] + Permission.new(file_lstat).to_s + Mac.new.attr(full_path)
   end
 
   private
 
   attr_reader :file_lstat, :full_path
 
-  def get_file_type(file_lstat)
-    return 'b' if file_lstat.blockdev?
-
-    return 'c' if file_lstat.chardev?
-
-    return 'd' if file_lstat.directory?
-
-    return 'l' if file_lstat.symlink?
-
-    return 'p' if file_lstat.pipe?
-
-    return 's' if file_lstat.socket?
-
-    return '-' if file_lstat.file?
-
-    ' '
-  end
+  FILE_TYPE_CHAR = {
+    'file' => '-',
+    'directory' => 'd',
+    'characterSpecial' => 'c',
+    'blockSpecial' => 'b',
+    'fifo' => 'p',
+    'link' => 'l',
+    'socket' => 's',
+    'unknown' => ' '
+  }.freeze
 end
