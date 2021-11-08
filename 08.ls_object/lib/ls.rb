@@ -11,7 +11,8 @@ require_relative './directory_section'
 class Ls
   def initialize(command_line_arguments: ARGV)
     @ls_option = LsOption.new(command_line_arguments: command_line_arguments)
-    @grouped_filenames_container = GroupedFilenamesContainer.new(reverse_flag: ls_option.reverse?, filenames: ls_option.filenames)
+    @grouped_filenames_container =
+      GroupedFilenamesContainer.new(reverse_flag: ls_option.reverse?, filenames: ls_option.filenames)
   end
 
   def build_results
@@ -30,7 +31,11 @@ class Ls
     directory_sections = grouped_filenames_container.directories.map do |directory_path|
       DirectorySection.new(directory_path: directory_path, ls_option: ls_option)
     end
-    result_sections = grouped_filenames_container.files.empty? ? directory_sections : directory_sections.unshift(files_section)
+    result_sections = if grouped_filenames_container.files.empty?
+                        directory_sections
+                      else
+                        directory_sections.unshift(files_section)
+                      end
     result_sections.map(&:to_s).join("\n")
   end
 

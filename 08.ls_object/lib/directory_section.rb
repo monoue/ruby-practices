@@ -11,13 +11,13 @@ class DirectorySection
 
   def to_s
     filenames = init_filenames(directory_path, ls_option)
-    directory_block_str = if ls_option.long_format?
-                            LongFormatDirectorySection.new(filenames: filenames,
-                                                           directory_path: directory_path).to_s
-                          else
-                            NormalFormatFilesSection.new(filenames).to_s
-                          end
-    ls_option.filenames.size > 1 ? "#{header_line(directory_path)}#{directory_block_str}" : directory_block_str
+    directory_section = if ls_option.long_format?
+                          LongFormatDirectorySection.new(filenames: filenames,
+                                                         directory_path: directory_path)
+                        else
+                          NormalFormatFilesSection.new(filenames)
+                        end
+    ls_option.filenames.size > 1 ? "#{header_line(directory_path)}#{directory_section}" : directory_section.to_s
   end
 
   private

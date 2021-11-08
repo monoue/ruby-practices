@@ -16,7 +16,10 @@ class NormalFormatFilesSection
     str = ''
     (0...rows_num).each do |current_row|
       current_row.step(filenames.size - 1, rows_num) do |i|
-        str << format('%-*s', width_for_filename - count_multibyte_chars(filenames[i]), filenames[i])
+        str << format(
+          '%-*s',
+          width_for_filename - count_multibyte_chars(filenames[i]), filenames[i]
+        )
       end
       str.rstrip! << "\n"
     end
