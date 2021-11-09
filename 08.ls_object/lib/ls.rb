@@ -21,13 +21,13 @@ class Ls
 
   def build_result
     files_section = if ls_option.long_format?
-                      LongFormatFilesSection.new(filenames: grouped_filenames_container.files,
-                                                 directory_path: '.')
+                      Sections::LongFormatFilesSection.new(filenames: grouped_filenames_container.files,
+                                                           directory_path: '.')
                     else
-                      NormalFormatFilesSection.new(grouped_filenames_container.files)
+                      Sections::NormalFormatFilesSection.new(grouped_filenames_container.files)
                     end
     directory_sections = grouped_filenames_container.directories.map do |directory_path|
-      DirectorySection.new(directory_path: directory_path, ls_option: ls_option)
+      Sections::DirectorySection.new(directory_path: directory_path, ls_option: ls_option)
     end
     result_sections = if grouped_filenames_container.files.empty?
                         directory_sections
