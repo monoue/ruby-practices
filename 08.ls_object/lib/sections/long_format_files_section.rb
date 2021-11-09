@@ -1,8 +1,6 @@
 # frozen_string_literal: false
 
-require_relative './file_status'
-require_relative './long_format_line'
-require_relative './entire_file_status_width'
+require_relative './long_formats'
 
 class LongFormatFilesSection
   def initialize(filenames:, directory_path:)

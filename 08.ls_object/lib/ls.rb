@@ -4,9 +4,7 @@
 
 require_relative './ls_option'
 require_relative './grouped_filenames_container'
-require_relative './long_format_files_section'
-require_relative './normal_format_files_section'
-require_relative './directory_section'
+require_relative './sections'
 
 class Ls
   def initialize(command_line_arguments: ARGV)

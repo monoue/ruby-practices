@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative './long_format_directory_section'
 require_relative './normal_format_files_section'
+require_relative './long_format_files_section'
 
 class DirectorySection
   def initialize(directory_path:, ls_option:)
@@ -12,17 +12,24 @@ class DirectorySection
   def to_s
     filenames = init_filenames(directory_path, ls_option)
     directory_section = if ls_option.long_format?
-                          LongFormatDirectorySection.new(filenames: filenames,
-                                                         directory_path: directory_path)
+                          make_total_blocks_line(filenames) +
+                            LongFormatFilesSection.new(filenames: filenames,
+                                                       directory_path: directory_path).to_s
                         else
-                          NormalFormatFilesSection.new(filenames)
+                          NormalFormatFilesSection.new(filenames).to_s
                         end
-    ls_option.filenames.size > 1 ? "#{header_line(directory_path)}#{directory_section}" : directory_section.to_s
+    ls_option.filenames.size > 1 ? "#{header_line(directory_path)}#{directory_section}" : directory_section
   end
 
   private
 
   attr_reader :directory_path, :ls_option
+
+  def make_total_blocks_line(filenames)
+    file_statuses = filenames.map { |filename| FileStatus.new(filename: filename, directory_path: directory_path) }
+    total_blocks = file_statuses.map(&:blocks).sum
+    "total #{total_blocks}\n"
+  end
 
   def header_line(directory_path)
     "#{directory_path}:\n"
