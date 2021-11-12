@@ -16,7 +16,7 @@ module Sections
       end
 
       def mode
-        FileMode.new(lstat, full_path).to_s
+        FileMode.new(lstat, full_path)
       end
 
       def nlink
@@ -36,7 +36,7 @@ module Sections
       end
 
       def time_stamp
-        TimeStamp.new(lstat.mtime).to_s
+        TimeStamp.new(lstat.mtime)
       end
 
       def blocks

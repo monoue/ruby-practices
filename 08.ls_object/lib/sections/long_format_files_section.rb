@@ -18,7 +18,7 @@ module Sections
         LongFormats::LongFormatLine.new(
           file_status: file_status,
           entire_file_status_width: entire_file_status_width
-        ).to_s
+        )
       end.join
     end
 
