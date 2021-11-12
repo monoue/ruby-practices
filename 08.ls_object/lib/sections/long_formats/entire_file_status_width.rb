@@ -8,28 +8,24 @@ module Sections
       end
 
       def nlink
-        get_status_max_width(proc { |file_status| file_status.nlink.to_s })
+        file_statuses.max_by(&:nlink).nlink.to_s.size
       end
 
       def owner_name
-        get_status_max_width(proc { |file_status| file_status.owner_name })
+        file_statuses.max_by { |file_status| file_status.owner_name.size }.owner_name.size
       end
 
       def group_name
-        get_status_max_width(proc { |file_status| file_status.group_name })
+        file_statuses.max_by { |file_status| file_status.group_name.size }.group_name.size
       end
 
       def size
-        get_status_max_width(proc { |file_status| file_status.file_size.to_s })
+        file_statuses.max_by(&:file_size).file_size.to_s.size
       end
 
       private
 
       attr_reader :file_statuses
-
-      def get_status_max_width(method)
-        file_statuses.map { |file_status| method.call(file_status).size }.max
-      end
     end
   end
 end
