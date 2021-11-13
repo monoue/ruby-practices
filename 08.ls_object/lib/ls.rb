@@ -4,6 +4,7 @@
 
 require_relative './ls_option'
 require_relative './grouped_filenames_container'
+require_relative './file_status'
 require_relative './sections'
 
 class Ls
@@ -20,11 +21,13 @@ class Ls
   private
 
   def build_result
+    file_statuses = grouped_filenames_container.files.map do |filename|
+      FileStatus.new(filename: filename)
+    end
     files_section = if ls_option.long_format?
-                      Sections::LongFormatFilesSection.new(filenames: grouped_filenames_container.files,
-                                                           directory_path: '.')
+                      Sections::LongFormatFilesSection.new(file_statuses)
                     else
-                      Sections::NormalFormatFilesSection.new(grouped_filenames_container.files)
+                      Sections::NormalFormatFilesSection.new(file_statuses)
                     end
     directory_sections = grouped_filenames_container.directories.map do |directory_path|
       Sections::DirectorySection.new(directory_path: directory_path, ls_option: ls_option)
