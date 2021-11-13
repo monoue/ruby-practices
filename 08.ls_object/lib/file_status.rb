@@ -2,7 +2,6 @@
 
 require 'etc'
 require_relative './sections/long_formats/file_mode'
-require_relative './sections/long_formats/time_stamp'
 
 class FileStatus
   attr_reader :filename
@@ -34,7 +33,7 @@ class FileStatus
   end
 
   def time_stamp
-    Sections::LongFormats::TimeStamp.new(lstat.mtime)
+    lstat.mtime
   end
 
   def blocks
