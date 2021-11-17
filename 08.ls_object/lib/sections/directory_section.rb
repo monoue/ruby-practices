@@ -2,7 +2,6 @@
 
 require_relative './normal_format_files_section'
 require_relative './long_format_files_section'
-require_relative '../file_status'
 
 module Sections
   class DirectorySection
@@ -13,15 +12,11 @@ module Sections
 
     def to_s
       filenames = init_filenames(directory_path, ls_option)
-      file_statuses = filenames.map do |filename|
-        FileStatus.new(filename: filename, directory_path: directory_path)
-      end
-
       directory_section = if ls_option.long_format?
                             make_total_blocks_line(filenames) +
-                              LongFormatFilesSection.new(file_statuses).to_s
+                              LongFormatFilesSection.new(filenames: filenames, directory_path: directory_path).to_s
                           else
-                            NormalFormatFilesSection.new(file_statuses).to_s
+                            NormalFormatFilesSection.new(filenames: filenames, directory_path: directory_path).to_s
                           end
       ls_option.filenames.size > 1 ? "#{header_line(directory_path)}#{directory_section}" : directory_section
     end
