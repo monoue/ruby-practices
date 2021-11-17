@@ -12,7 +12,7 @@ module Sections
       end
 
       def to_s
-        FILE_TYPE_CHAR[file_lstat.ftype] + Permission.new(file_lstat).to_s + Mac.new.attr(full_path)
+        FILE_TYPE_CHAR[file_lstat.ftype] + Permission.new(file_lstat).format_permission + Mac.new.attr(full_path)
       end
 
       private

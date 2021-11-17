@@ -7,7 +7,7 @@ module Sections
         @file_lstat = file_lstat
       end
 
-      def to_s
+      def format_permission
         mode_octal = file_lstat.mode.to_s(8)
         owner_permission = get_owner_or_group_permission(mode_octal[-3].to_i.to_s(2), file_lstat.setuid?)
         group_permission = get_owner_or_group_permission(mode_octal[-2].to_i.to_s(2), file_lstat.setgid?)

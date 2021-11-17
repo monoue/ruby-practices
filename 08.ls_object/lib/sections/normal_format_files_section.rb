@@ -9,7 +9,7 @@ module Sections
       @directory_path = directory_path
     end
 
-    def to_s
+    def format_section
       return '' if filenames.empty?
 
       file_statuses = filenames.map do |filename|
@@ -37,7 +37,7 @@ module Sections
     attr_reader :filenames, :directory_path
 
     def calculate_width_for_filename(file_statuses)
-      file_statuses.max_by(&:multibyte_filename_length).multibyte_filename_length + 1
+      file_statuses.map(&:multibyte_filename_length).max + 1
     end
   end
 end

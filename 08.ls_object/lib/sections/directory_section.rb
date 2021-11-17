@@ -10,13 +10,13 @@ module Sections
       @ls_option = ls_option
     end
 
-    def to_s
+    def format_section
       filenames = init_filenames(directory_path, ls_option)
       directory_section = if ls_option.long_format?
                             make_total_blocks_line(filenames) +
-                              LongFormatFilesSection.new(filenames: filenames, directory_path: directory_path).to_s
+                              LongFormatFilesSection.new(filenames: filenames, directory_path: directory_path).format_section
                           else
-                            NormalFormatFilesSection.new(filenames: filenames, directory_path: directory_path).to_s
+                            NormalFormatFilesSection.new(filenames: filenames, directory_path: directory_path).format_section
                           end
       ls_option.filenames.size > 1 ? "#{header_line(directory_path)}#{directory_section}" : directory_section
     end

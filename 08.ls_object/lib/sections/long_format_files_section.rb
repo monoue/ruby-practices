@@ -9,7 +9,7 @@ module Sections
       @directory_path = directory_path
     end
 
-    def to_s
+    def format_section
       file_statuses = filenames.map do |filename|
         FileStatus.new(filename: filename, directory_path: directory_path)
       end
@@ -18,7 +18,7 @@ module Sections
         LongFormats::LongFormatLine.new(
           file_status: file_status,
           entire_file_status_width: entire_file_status_width
-        )
+        ).format_line
       end.join
     end
 

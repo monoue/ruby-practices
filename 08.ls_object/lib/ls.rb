@@ -33,7 +33,7 @@ class Ls
                       else
                         [files_section, *directory_sections]
                       end
-    result_sections.map(&:to_s).join("\n")
+    result_sections.map(&:format_section).join("\n")
   end
 
   def build_warning_message

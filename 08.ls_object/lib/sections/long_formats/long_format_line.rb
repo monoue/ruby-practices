@@ -8,7 +8,7 @@ module Sections
         @entire_file_status_width = entire_file_status_width
       end
 
-      def to_s
+      def format_line
         nlink_block = format '%*d', entire_file_status_width.nlink, file_status.nlink
         owner_name_block = format '%-*s', entire_file_status_width.owner_name, file_status.owner_name
         group_name_block = format '%-*s', entire_file_status_width.group_name, file_status.group_name
