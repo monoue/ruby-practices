@@ -29,11 +29,11 @@ class GroupedFilenamesContainer
   end
 
   def sort_paths(paths, reverse_flag)
-    paths.each_value(&:sort!)
+    sorted_paths = paths.transform_values(&:sort)
     if reverse_flag
-      paths[:files].reverse!
-      paths[:directories].reverse!
+      [sorted_paths[:files].reverse, sorted_paths[:directories].reverse, sorted_paths[:non_existent_paths]]
+    else
+      sorted_paths.values
     end
-    paths.values
   end
 end

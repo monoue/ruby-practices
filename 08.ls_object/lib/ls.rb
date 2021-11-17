@@ -31,7 +31,7 @@ class Ls
     result_sections = if grouped_filenames_container.files.empty?
                         directory_sections
                       else
-                        directory_sections.unshift(files_section)
+                        [files_section, *directory_sections]
                       end
     result_sections.map(&:to_s).join("\n")
   end
