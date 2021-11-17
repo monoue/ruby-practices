@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 require 'io/console'
 
@@ -18,17 +18,18 @@ module Sections
       width_for_filename = calculate_width_for_filename(file_statuses)
       filenames_num_per_line = IO.console.winsize[1] / width_for_filename
       rows_num = (file_statuses.size / filenames_num_per_line.to_f).ceil
-      str = ''
+      rows = []
       (0...rows_num).each do |current_row|
+        cols = []
         current_row.step(file_statuses.size - 1, rows_num) do |i|
-          str << format(
+          cols << format(
             '%-*s',
             width_for_filename - file_statuses[i].multibyte_chars_of_filename_num, file_statuses[i].filename
           )
         end
-        str.rstrip! << "\n"
+        rows << cols.join.rstrip
       end
-      str
+      rows.join("\n")
     end
 
     private

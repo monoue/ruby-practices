@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 require 'etc'
 require_relative './sections/long_formats/file_mode'
