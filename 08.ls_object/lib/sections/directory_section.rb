@@ -26,19 +26,13 @@ module Sections
     attr_reader :directory_path, :ls_option
 
     def init_filenames(directory_path, ls_option)
-      # p directory_path
-      filenames = Dir.entries(directory_path)
-      filenames = filenames.reject { |filename| filename[0] == '.' } unless ls_option.all?
-      filenames.sort!
+      filenames =
+        if ls_option.all?
+          Dir.glob('*', File::FNM_DOTMATCH, base: directory_path)
+        else
+          Dir.glob('*', base: directory_path)
+        end.sort
       ls_option.reverse? ? filenames.reverse : filenames
     end
-    # def init_filenames(directory_path, ls_option)
-      # p "#{directory_path}/*"
-      # filenames = ls_option.all? ? Dir.glob("#{directory_path}/*") : Dir.entries(directory_path)
-      # filenames = filenames.reject { |filename| filename[0] == '.' } unless ls_option.all?
-      # p filenames
-      # filenames.sort!
-    #   ls_option.reverse? ? filenames.reverse : filenames
-    # end
   end
 end
