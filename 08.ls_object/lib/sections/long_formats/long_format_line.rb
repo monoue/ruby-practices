@@ -22,25 +22,19 @@ module Sections
       attr_reader :file_status, :entire_file_status_width
 
       def format_timestamp(file_mtime)
-        month = format '%2d', file_mtime.month
-        day = format '%2d', file_mtime.day
-        time_or_year = get_time_or_year(file_mtime)
-        "#{month} #{day} #{time_or_year}"
-      end
-
-      def get_time_or_year(file_mtime)
         if recent?(file_mtime)
-          format '%<hour>02d:%<min>02d', hour: file_mtime.hour, min: file_mtime.min
+          file_mtime.strftime('%_m %e %R')
         else
-          format '%5d', file_mtime.year
+          file_mtime.strftime('%_m %e %_5Y')
         end
       end
 
       def recent?(file_mtime)
         return false if file_mtime > Time.now
 
-        six_month = 60 * 60 * 24 * 365.2425 / 2
-        file_mtime.to_f >= Time.now.to_f - six_month
+        days_per_year = 365.2425
+        half_a_year_by_the_second = 60 * 60 * 24 * days_per_year / 2
+        file_mtime.to_f >= Time.now.to_f - half_a_year_by_the_second
       end
     end
   end

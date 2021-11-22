@@ -3,29 +3,25 @@
 module Sections
   module LongFormats
     class EntireFileStatusWidth
+      attr_reader :nlink, :owner_name, :group_name, :size
+
       def initialize(file_statuses)
-        @file_statuses = file_statuses
+        @nlink, @owner_name, @group_name, @size = search_max_width(file_statuses)
       end
 
-      def nlink
-        file_statuses.max_by(&:nlink).nlink.to_s.size
+      def search_max_width(file_statuses)
+        max_nlink_width = 0
+        max_owner_name_width = 0
+        max_group_name_width = 0
+        max_size_width = 0
+        file_statuses.each do |file_status|
+          max_nlink_width = [file_status.nlink.to_s.size, max_nlink_width].max
+          max_owner_name_width = [file_status.owner_name.size, max_owner_name_width].max
+          max_group_name_width = [file_status.group_name.size, max_group_name_width].max
+          max_size_width = [file_status.file_size.to_s.size, max_size_width].max
+        end
+        [max_nlink_width, max_owner_name_width, max_group_name_width, max_size_width]
       end
-
-      def owner_name
-        file_statuses.max_by { |file_status| file_status.owner_name.size }.owner_name.size
-      end
-
-      def group_name
-        file_statuses.max_by { |file_status| file_status.group_name.size }.group_name.size
-      end
-
-      def size
-        file_statuses.max_by(&:file_size).file_size.to_s.size
-      end
-
-      private
-
-      attr_reader :file_statuses
     end
   end
 end
