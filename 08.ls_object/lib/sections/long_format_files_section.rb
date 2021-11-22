@@ -13,11 +13,13 @@ module Sections
     end
 
     def format_section
+      return '' if file_statuses.empty?
+
       entire_file_status_width = LongFormats::EntireFileStatusWidth.new(file_statuses)
       section = file_statuses.map do |file_status|
         LongFormats::LongFormatLine.new(file_status, entire_file_status_width).format_line
-      end.join
-      total_blocks ? make_total_blocks_line + section : section
+      end.join("\n")
+      total_blocks ? "#{make_total_blocks_line}#{section}\n" : "#{section}\n"
     end
 
     private
