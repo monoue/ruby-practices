@@ -35,21 +35,23 @@ module Sections
 
       def get_owner_or_group_permission(permission_binary_string, set_user_or_group_id)
         readable_and_writable_string = get_readable_and_writable_string(permission_binary_string)
-        executable_char = if set_user_or_group_id
-                            char_bit_set?(permission_binary_string[-1]) ? 's' : 'S'
-                          else
-                            get_executable_or_not_char(permission_binary_string[-1])
-                          end
+        executable_char =
+          if set_user_or_group_id
+            char_bit_set?(permission_binary_string[-1]) ? 's' : 'S'
+          else
+            get_executable_or_not_char(permission_binary_string[-1])
+          end
         readable_and_writable_string + executable_char
       end
 
       def get_other_permission(permission_binary_string, sticky)
         readable_and_writable_string = get_readable_and_writable_string(permission_binary_string)
-        executable_char = if sticky
-                            char_bit_set?(permission_binary_string[-1]) ? 't' : 'T'
-                          else
-                            get_executable_or_not_char(permission_binary_string[-1])
-                          end
+        executable_char =
+          if sticky
+            char_bit_set?(permission_binary_string[-1]) ? 't' : 'T'
+          else
+            get_executable_or_not_char(permission_binary_string[-1])
+          end
         readable_and_writable_string + executable_char
       end
     end

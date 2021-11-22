@@ -14,33 +14,31 @@ module Sections
       filenames = init_filenames(directory_path, ls_option)
       directory_section =
         if ls_option.long_format?
-          make_total_blocks_line(filenames) +
-            LongFormatFilesSection.new(filenames, directory_path: directory_path).format_section
+          LongFormatFilesSection.new(filenames, directory_path: directory_path, total_blocks: true).format_section
         else
           NormalFormatFilesSection.new(filenames, directory_path: directory_path).format_section
         end
-      ls_option.filenames.size > 1 ? "#{header_line(directory_path)}#{directory_section}" : directory_section
+      ls_option.filenames.size > 1 ? "#{directory_path}:\n#{directory_section}" : directory_section
     end
 
     private
 
     attr_reader :directory_path, :ls_option
 
-    def make_total_blocks_line(filenames)
-      file_statuses = filenames.map { |filename| FileStatus.new(filename, directory_path: directory_path) }
-      total_blocks = file_statuses.map(&:blocks).sum
-      "total #{total_blocks}\n"
-    end
-
-    def header_line(directory_path)
-      "#{directory_path}:\n"
-    end
-
-    def init_filenames(directory_path, option)
+    def init_filenames(directory_path, ls_option)
+      # p directory_path
       filenames = Dir.entries(directory_path)
-      filenames = filenames.reject { |filename| filename[0] == '.' } unless option.all?
+      filenames = filenames.reject { |filename| filename[0] == '.' } unless ls_option.all?
       filenames.sort!
-      option.reverse? ? filenames.reverse : filenames
+      ls_option.reverse? ? filenames.reverse : filenames
     end
+    # def init_filenames(directory_path, ls_option)
+      # p "#{directory_path}/*"
+      # filenames = ls_option.all? ? Dir.glob("#{directory_path}/*") : Dir.entries(directory_path)
+      # filenames = filenames.reject { |filename| filename[0] == '.' } unless ls_option.all?
+      # p filenames
+      # filenames.sort!
+    #   ls_option.reverse? ? filenames.reverse : filenames
+    # end
   end
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'io/console'
+require_relative '../file_status'
 
 module Sections
   class NormalFormatFilesSection
