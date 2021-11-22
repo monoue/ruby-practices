@@ -6,7 +6,7 @@ require_relative './sections/long_formats/file_mode'
 class FileStatus
   attr_reader :filename
 
-  def initialize(filename:, directory_path: '.')
+  def initialize(filename, directory_path: '.')
     @filename = filename
     @full_path = "#{directory_path}/#{filename}"
     @lstat = File.lstat(full_path)

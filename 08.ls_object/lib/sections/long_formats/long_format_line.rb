@@ -3,7 +3,7 @@
 module Sections
   module LongFormats
     class LongFormatLine
-      def initialize(file_status:, entire_file_status_width:)
+      def initialize(file_status, entire_file_status_width)
         @file_status = file_status
         @entire_file_status_width = entire_file_status_width
       end

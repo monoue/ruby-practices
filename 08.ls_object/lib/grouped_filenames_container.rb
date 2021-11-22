@@ -3,7 +3,7 @@
 class GroupedFilenamesContainer
   attr_reader :files, :directories, :non_existent_paths
 
-  def initialize(reverse_flag:, filenames:)
+  def initialize(filenames, reverse_flag:)
     classified_paths = classify_paths(filenames)
     @files, @directories, @non_existent_paths = sort_paths(classified_paths, reverse_flag)
   end

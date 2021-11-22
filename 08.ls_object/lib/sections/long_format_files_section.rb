@@ -4,21 +4,18 @@ require_relative './long_formats'
 
 module Sections
   class LongFormatFilesSection
-    def initialize(filenames:, directory_path: '.')
+    def initialize(filenames, directory_path: '.')
       @filenames = filenames
       @directory_path = directory_path
     end
 
     def format_section
       file_statuses = filenames.map do |filename|
-        FileStatus.new(filename: filename, directory_path: directory_path)
+        FileStatus.new(filename, directory_path: directory_path)
       end
       entire_file_status_width = LongFormats::EntireFileStatusWidth.new(file_statuses)
       file_statuses.map do |file_status|
-        LongFormats::LongFormatLine.new(
-          file_status: file_status,
-          entire_file_status_width: entire_file_status_width
-        ).format_line
+        LongFormats::LongFormatLine.new(file_status, entire_file_status_width).format_line
       end.join
     end
 

@@ -10,7 +10,7 @@ class Ls
   def initialize(command_line_arguments: ARGV)
     @ls_option = LsOption.new(command_line_arguments: command_line_arguments)
     @grouped_filenames_container =
-      GroupedFilenamesContainer.new(reverse_flag: ls_option.reverse?, filenames: ls_option.filenames)
+      GroupedFilenamesContainer.new(ls_option.filenames, reverse_flag: ls_option.reverse?)
   end
 
   def build_results
@@ -20,19 +20,21 @@ class Ls
   private
 
   def build_result
-    files_section = if ls_option.long_format?
-                      Sections::LongFormatFilesSection.new(filenames: grouped_filenames_container.files)
-                    else
-                      Sections::NormalFormatFilesSection.new(filenames: grouped_filenames_container.files)
-                    end
+    files_section =
+      if ls_option.long_format?
+        Sections::LongFormatFilesSection.new(grouped_filenames_container.files)
+      else
+        Sections::NormalFormatFilesSection.new(grouped_filenames_container.files)
+      end
     directory_sections = grouped_filenames_container.directories.map do |directory_path|
-      Sections::DirectorySection.new(directory_path: directory_path, ls_option: ls_option)
+      Sections::DirectorySection.new(directory_path, ls_option)
     end
-    result_sections = if grouped_filenames_container.files.empty?
-                        directory_sections
-                      else
-                        [files_section, *directory_sections]
-                      end
+    result_sections =
+      if grouped_filenames_container.files.empty?
+        directory_sections
+      else
+        [files_section, *directory_sections]
+      end
     result_sections.map(&:format_section).join("\n")
   end
 

@@ -4,7 +4,7 @@ require 'io/console'
 
 module Sections
   class NormalFormatFilesSection
-    def initialize(filenames:, directory_path: '.')
+    def initialize(filenames, directory_path: '.')
       @filenames = filenames
       @directory_path = directory_path
     end
@@ -13,7 +13,7 @@ module Sections
       return '' if filenames.empty?
 
       file_statuses = filenames.map do |filename|
-        FileStatus.new(filename: filename)
+        FileStatus.new(filename)
       end
       multibyte_width_for_filename = calculate_multibyte_width_for_filename(file_statuses)
       filenames_num_per_line = IO.console.winsize[1] / multibyte_width_for_filename

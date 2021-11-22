@@ -5,19 +5,20 @@ require_relative './long_format_files_section'
 
 module Sections
   class DirectorySection
-    def initialize(directory_path:, ls_option:)
+    def initialize(directory_path, ls_option)
       @directory_path = directory_path
       @ls_option = ls_option
     end
 
     def format_section
       filenames = init_filenames(directory_path, ls_option)
-      directory_section = if ls_option.long_format?
-                            make_total_blocks_line(filenames) +
-                              LongFormatFilesSection.new(filenames: filenames, directory_path: directory_path).format_section
-                          else
-                            NormalFormatFilesSection.new(filenames: filenames, directory_path: directory_path).format_section
-                          end
+      directory_section =
+        if ls_option.long_format?
+          make_total_blocks_line(filenames) +
+            LongFormatFilesSection.new(filenames, directory_path: directory_path).format_section
+        else
+          NormalFormatFilesSection.new(filenames, directory_path: directory_path).format_section
+        end
       ls_option.filenames.size > 1 ? "#{header_line(directory_path)}#{directory_section}" : directory_section
     end
 
@@ -26,7 +27,7 @@ module Sections
     attr_reader :directory_path, :ls_option
 
     def make_total_blocks_line(filenames)
-      file_statuses = filenames.map { |filename| FileStatus.new(filename: filename, directory_path: directory_path) }
+      file_statuses = filenames.map { |filename| FileStatus.new(filename, directory_path: directory_path) }
       total_blocks = file_statuses.map(&:blocks).sum
       "total #{total_blocks}\n"
     end
