@@ -14,7 +14,7 @@ module Sections
       filenames = init_filenames(directory_path, ls_option)
       directory_section =
         if ls_option.long_format?
-          LongFormatFilesSection.new(filenames, directory_path: directory_path, total_blocks: true).format_section
+          LongFormatFilesSection.new(filenames, directory_path: directory_path).format_section(displays_total_blocks: true)
         else
           NormalFormatFilesSection.new(filenames, directory_path: directory_path).format_section
         end
@@ -31,7 +31,7 @@ module Sections
           Dir.glob('*', File::FNM_DOTMATCH, base: directory_path)
         else
           Dir.glob('*', base: directory_path)
-        end.sort
+        end
       ls_option.reverse? ? filenames.reverse : filenames
     end
   end
