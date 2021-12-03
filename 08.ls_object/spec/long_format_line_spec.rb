@@ -24,7 +24,7 @@ RSpec.describe Sections::LongFormats::LongFormatLine do # rubocop:disable Metric
       allow(entire_file_status_width_mock).to receive(:nlink).and_return(0)
       allow(entire_file_status_width_mock).to receive(:owner_name).and_return(0)
       allow(entire_file_status_width_mock).to receive(:group_name).and_return(0)
-      allow(entire_file_status_width_mock).to receive(:size).and_return(0)
+      allow(entire_file_status_width_mock).to receive(:file_size).and_return(0)
     end
     days_per_year = 365.2425
     half_a_year_ago = Time.now - 60 * 60 * 24 * days_per_year / 2

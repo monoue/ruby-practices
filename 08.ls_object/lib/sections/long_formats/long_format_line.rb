@@ -12,7 +12,7 @@ module Sections
         nlink_block = format '%*d', entire_file_status_width.nlink, file_status.nlink
         owner_name_block = format '%-*s', entire_file_status_width.owner_name, file_status.owner_name
         group_name_block = format '%-*s', entire_file_status_width.group_name, file_status.group_name
-        file_size_block = format '%*d', entire_file_status_width.size, file_status.file_size
+        file_size_block = format '%*d', entire_file_status_width.file_size, file_status.file_size
         formatted_timestamp = format_timestamp(file_status.time_stamp)
         "#{file_status.mode} #{nlink_block} #{owner_name_block}  #{group_name_block}  #{file_size_block} #{formatted_timestamp} #{file_status.filename}"
       end
