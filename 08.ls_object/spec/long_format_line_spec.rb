@@ -26,12 +26,12 @@ RSpec.describe Sections::LongFormats::LongFormatLine do # rubocop:disable Metric
       allow(entire_file_status_width_mock).to receive(:group_name).and_return(0)
       allow(entire_file_status_width_mock).to receive(:file_size).and_return(0)
     end
-    days_per_year = 365.2425
-    half_a_year_ago = Time.now - 60 * 60 * 24 * days_per_year / 2
+    let!(:days_per_year) { 365.2425 }
+    let!(:half_a_year_ago) { Time.now - 60 * 60 * 24 * days_per_year / 2 }
 
     context "when the target file's last modification time is" do # rubocop:disable Metrics/BlockLength
       context 'within half a year ago' do
-        last_modification_time = half_a_year_ago + 1
+        let!(:last_modification_time) { half_a_year_ago + 1 }
 
         it 'includes the hour and the minute of the time' do
           allow(file_status_mock).to receive(:time_stamp).and_return(last_modification_time)
@@ -49,7 +49,7 @@ RSpec.describe Sections::LongFormats::LongFormatLine do # rubocop:disable Metric
       end
 
       context 'equal to half a year ago' do
-        last_modification_time = half_a_year_ago
+        let!(:last_modification_time) { half_a_year_ago }
 
         it 'includes the year of the time' do
           allow(file_status_mock).to receive(:time_stamp).and_return(last_modification_time)
@@ -67,7 +67,7 @@ RSpec.describe Sections::LongFormats::LongFormatLine do # rubocop:disable Metric
       end
 
       context 'older than half a year ago' do
-        last_modification_time = half_a_year_ago - 1
+        let!(:last_modification_time) { half_a_year_ago - 1 }
 
         it 'includes the year of the time' do
           allow(file_status_mock).to receive(:time_stamp).and_return(last_modification_time)
