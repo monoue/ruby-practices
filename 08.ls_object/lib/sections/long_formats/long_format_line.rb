@@ -17,11 +17,6 @@ module Sections
         "#{file_status.mode} #{nlink_block} #{owner_name_block}  #{group_name_block}  #{file_size_block} #{formatted_timestamp} #{file_status.filename}"
       end
 
-      # テスト容易性のためにメソッド化
-      def current_time
-        Time.now
-      end
-
       private
 
       attr_reader :file_status, :entire_file_status_width
@@ -34,12 +29,17 @@ module Sections
         end
       end
 
+      # テスト容易性のためにメソッド化
+      def current_time
+        Time.now
+      end
+
       def recent?(file_mtime)
         return false if file_mtime > current_time
 
         days_per_year = 365.2425
         half_a_year_by_the_second = 60 * 60 * 24 * days_per_year / 2
-        file_mtime.to_f >= Time.now.to_f - half_a_year_by_the_second
+        file_mtime.to_f >= current_time.to_f - half_a_year_by_the_second
       end
     end
   end
