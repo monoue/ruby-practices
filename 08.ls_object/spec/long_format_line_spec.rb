@@ -9,10 +9,10 @@ RSpec.describe Sections::LongFormats::LongFormatLine do # rubocop:disable Metric
     let!(:status_width) { entire_file_status_width.new(0, 0, 0, 0) }
     let!(:file_status) { FileStatus.new('spec_helper.rb', directory_path: 'spec') }
 
-    context "when the target file's last modification time is" do # rubocop:disable Metrics/BlockLength
+    context "when the target file's last modification time is before the current time and the difference is" do # rubocop:disable Metrics/BlockLength
       # 2021-12-15 12:00 の半年前は 2021-06-15 21:05:24
 
-      context 'within half a year ago' do
+      context 'within half a year' do
         it 'includes the hour and the minute of the time' do
           allow(file_status).to receive(:time_stamp).and_return(Time.parse('2021-06-15 21:05:24'))
           format_line = Sections::LongFormats::LongFormatLine.new(file_status, status_width)
@@ -21,12 +21,32 @@ RSpec.describe Sections::LongFormats::LongFormatLine do # rubocop:disable Metric
         end
       end
 
-      context 'older than half a year ago' do
+      context 'larger than half a year' do
         it 'includes the year of the time' do
           allow(file_status).to receive(:time_stamp).and_return(Time.parse('2021-06-15 21:05:23'))
           format_line = Sections::LongFormats::LongFormatLine.new(file_status, status_width)
           allow(format_line).to receive(:current_time).and_return(Time.parse('2021-12-15 12:00'))
           expect(format_line.format_line).to include ' 6 15  2021'
+        end
+      end
+    end
+
+    context "when the target file's last modification time is not before the current time and is" do # rubocop:disable Metrics/BlockLength
+      context 'equal to the current time' do
+        it 'includes the hour and the minute of the time' do
+          allow(file_status).to receive(:time_stamp).and_return(Time.parse('2021-12-15 12:00'))
+          format_line = Sections::LongFormats::LongFormatLine.new(file_status, status_width)
+          allow(format_line).to receive(:current_time).and_return(Time.parse('2021-12-15 12:00'))
+          expect(format_line.format_line).to include '12 15 12:00'
+        end
+      end
+
+      context 'after the current time' do
+        it 'includes the hour and the minute of the time' do
+          allow(file_status).to receive(:time_stamp).and_return(Time.parse('2021-12-15 12:00:01'))
+          format_line = Sections::LongFormats::LongFormatLine.new(file_status, status_width)
+          allow(format_line).to receive(:current_time).and_return(Time.parse('2021-12-15 12:00:00'))
+          expect(format_line.format_line).to include '12 15  2021'
         end
       end
     end
