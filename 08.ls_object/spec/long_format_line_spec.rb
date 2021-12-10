@@ -5,11 +5,10 @@ require 'time'
 
 RSpec.describe Sections::LongFormats::LongFormatLine do # rubocop:disable Metrics/BlockLength
   describe 'format_line' do # rubocop:disable Metrics/BlockLength
-    let!(:entire_file_status_width) { Struct.new(:nlink, :owner_name, :group_name, :file_size) }
-    let!(:status_width) { entire_file_status_width.new(0, 0, 0, 0) }
+    let!(:status_width) { Sections::LongFormatFilesSection::StatusWidth.new(0, 0, 0, 0) }
     let!(:file_status) { FileStatus.new('spec_helper.rb', directory_path: 'spec') }
 
-    context "when the target file's last modification time is before the current time and the difference is" do # rubocop:disable Metrics/BlockLength
+    context "when the target file's last modification time is before the current time and the difference is" do
       # 2021-12-15 12:00 の半年前は 2021-06-15 21:05:24
 
       context 'within half a year' do
@@ -31,7 +30,7 @@ RSpec.describe Sections::LongFormats::LongFormatLine do # rubocop:disable Metric
       end
     end
 
-    context "when the target file's last modification time is not before the current time and is" do # rubocop:disable Metrics/BlockLength
+    context "when the target file's last modification time is not before the current time and is" do
       context 'equal to the current time' do
         it 'includes the hour and the minute of the time' do
           allow(file_status).to receive(:time_stamp).and_return(Time.parse('2021-12-15 12:00'))

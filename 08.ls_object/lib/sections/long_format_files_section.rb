@@ -30,6 +30,8 @@ module Sections
       "total #{total_blocks}\n"
     end
 
+    StatusWidth = Struct.new(:nlink, :owner_name, :group_name, :file_size)
+
     def build_entire_file_status_width
       max_nlink_width = 0
       max_owner_name_width = 0
@@ -41,8 +43,7 @@ module Sections
         max_group_name_width = [file_status.group_name.size, max_group_name_width].max
         max_size_width = [file_status.file_size.to_s.size, max_size_width].max
       end
-      entire_file_status_width = Struct.new(:nlink, :owner_name, :group_name, :file_size)
-      entire_file_status_width.new(max_nlink_width, max_owner_name_width, max_group_name_width, max_size_width)
+      StatusWidth.new(max_nlink_width, max_owner_name_width, max_group_name_width, max_size_width)
     end
   end
 end
