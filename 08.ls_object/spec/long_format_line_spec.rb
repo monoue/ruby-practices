@@ -17,14 +17,7 @@ RSpec.describe Sections::LongFormats::LongFormatLine do # rubocop:disable Metric
           allow(file_status).to receive(:time_stamp).and_return(Time.parse('2021-06-15 21:06'))
           format_line = Sections::LongFormats::LongFormatLine.new(file_status, status_width)
           allow(format_line).to receive(:current_time).and_return(Time.parse('2021-12-15 12:00'))
-          expect(format_line.format_line).to include '21:06'
-        end
-
-        it 'does not include the year of the time' do
-          allow(file_status).to receive(:time_stamp).and_return(Time.parse('2021-06-15 21:06'))
-          format_line = Sections::LongFormats::LongFormatLine.new(file_status, status_width)
-          allow(format_line).to receive(:current_time).and_return(Time.parse('2021-12-15 12:00'))
-          expect(format_line.format_line).to_not include '2021'
+          expect(format_line.format_line).to include ' 6 15 21:06'
         end
       end
 
@@ -33,14 +26,7 @@ RSpec.describe Sections::LongFormats::LongFormatLine do # rubocop:disable Metric
           allow(file_status).to receive(:time_stamp).and_return(Time.parse('2021-06-15 21:05'))
           format_line = Sections::LongFormats::LongFormatLine.new(file_status, status_width)
           allow(format_line).to receive(:current_time).and_return(Time.parse('2021-12-15 12:00'))
-          expect(format_line.format_line).to include '2021'
-        end
-
-        it 'does not include the hour and the minute of the time' do
-          allow(file_status).to receive(:time_stamp).and_return(Time.parse('2021-06-15 21:05'))
-          format_line = Sections::LongFormats::LongFormatLine.new(file_status, status_width)
-          allow(format_line).to receive(:current_time).and_return(Time.parse('2021-12-15 12:00'))
-          expect(format_line.format_line).to_not include '21:05'
+          expect(format_line.format_line).to include ' 6 15  2021'
         end
       end
     end
