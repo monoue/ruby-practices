@@ -3,6 +3,7 @@
 module Sections
   module LongFormats
     class Permission
+
       def initialize(file_lstat)
         @file_lstat = file_lstat
       end

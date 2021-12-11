@@ -1,10 +1,22 @@
 # frozen_string_literal: true
 
+require 'mac'
 require_relative './long_formats'
 require_relative '../file_status'
 
 module Sections
   class LongFormatFilesSection
+    FILE_TYPE_CHAR = {
+      'file' => '-',
+      'directory' => 'd',
+      'characterSpecial' => 'c',
+      'blockSpecial' => 'b',
+      'fifo' => 'p',
+      'link' => 'l',
+      'socket' => 's',
+      'unknown' => ' '
+    }.freeze
+
     def initialize(filenames, directory_path: '.')
       @filenames = filenames
       @directory_path = directory_path
@@ -20,7 +32,7 @@ module Sections
       section = file_statuses.map.with_index do |file_status, i|
         full_path = "#{directory_path}/#{filenames[i]}"
         lstat = File.lstat(full_path)
-        file_mode = LongFormats::FileMode.new(lstat, full_path)
+        file_mode = build_file_mode(lstat, full_path)
         long_format_line = LongFormats::LongFormatLine.new(file_status, entire_file_status_width)
         "#{file_mode} #{long_format_line.format_line}"
       end.join("\n")
@@ -50,6 +62,10 @@ module Sections
         max_size_width = [file_status.file_size.to_s.size, max_size_width].max
       end
       StatusWidth.new(max_nlink_width, max_owner_name_width, max_group_name_width, max_size_width)
+    end
+
+    def build_file_mode(file_lstat, full_path)
+      FILE_TYPE_CHAR[file_lstat.ftype] + LongFormats::Permission.new(file_lstat).format_permission + Mac.new.attr(full_path)
     end
   end
 end

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative './file_mode'
-
 module Sections
   module LongFormats
     class LongFormatLine
