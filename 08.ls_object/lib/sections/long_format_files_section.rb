@@ -6,6 +6,8 @@ require_relative '../file_status'
 
 module Sections
   class LongFormatFilesSection
+    include LongFormats::Permission
+
     FILE_TYPE_CHAR = {
       'file' => '-',
       'directory' => 'd',
@@ -65,7 +67,7 @@ module Sections
     end
 
     def build_file_mode(file_lstat, full_path)
-      FILE_TYPE_CHAR[file_lstat.ftype] + LongFormats::Permission.new(file_lstat).format_permission + Mac.new.attr(full_path)
+      FILE_TYPE_CHAR[file_lstat.ftype] + LongFormats::Permission.format_permission(file_lstat) + Mac.new.attr(full_path)
     end
   end
 end
