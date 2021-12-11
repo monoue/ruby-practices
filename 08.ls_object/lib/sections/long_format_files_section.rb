@@ -6,25 +6,22 @@ require_relative '../file_status'
 module Sections
   class LongFormatFilesSection
     def initialize(filenames, directory_path: '.')
-      @file_statuses = []
-      @long_format_line_sets = []
-      filenames.each do |filename|
-        file_status = FileStatus.new(filename, directory_path: directory_path)
-        @file_statuses << file_status
-        full_path = "#{directory_path}/#{filename}"
-        lstat = File.lstat(full_path)
-        file_mode = LongFormats::FileMode.new(lstat, full_path)
-        @long_format_line_sets << { file_mode: file_mode, file_status: file_status}
+      @filenames = filenames
+      @directory_path = directory_path
+      @file_statuses = filenames.map do |filename|
+        FileStatus.new(filename, directory_path: directory_path)
       end
     end
 
     def format_section(display_total: false)
-      return '' if long_format_line_sets.empty?
+      return '' if file_statuses.empty?
 
       entire_file_status_width = build_entire_file_status_width
-      section = long_format_line_sets.map do |long_format_line_set|
-        file_mode = long_format_line_set[:file_mode]
-        long_format_line = LongFormats::LongFormatLine.new(long_format_line_set[:file_status], entire_file_status_width)
+      section = file_statuses.map.with_index do |file_status, i|
+        full_path = "#{directory_path}/#{filenames[i]}"
+        lstat = File.lstat(full_path)
+        file_mode = LongFormats::FileMode.new(lstat, full_path)
+        long_format_line = LongFormats::LongFormatLine.new(file_status, entire_file_status_width)
         "#{file_mode} #{long_format_line.format_line}"
       end.join("\n")
       display_total ? "#{make_total_blocks_line}#{section}\n" : "#{section}\n"
@@ -32,7 +29,7 @@ module Sections
 
     private
 
-    attr_reader :file_statuses, :long_format_line_sets
+    attr_reader :filenames, :directory_path, :file_statuses
 
     def make_total_blocks_line
       total_blocks = file_statuses.map(&:blocks).sum
