@@ -1,19 +1,14 @@
 # frozen_string_literal: true
 
 require 'etc'
-require_relative './sections/long_formats/file_mode'
 
 class FileStatus
   attr_reader :filename
 
   def initialize(filename, directory_path: '.')
     @filename = filename
-    @full_path = "#{directory_path}/#{filename}"
+    full_path = "#{directory_path}/#{filename}"
     @lstat = File.lstat(full_path)
-  end
-
-  def mode
-    Sections::LongFormats::FileMode.new(lstat, full_path)
   end
 
   def nlink
@@ -50,5 +45,5 @@ class FileStatus
 
   private
 
-  attr_reader :full_path, :lstat
+  attr_reader :lstat
 end

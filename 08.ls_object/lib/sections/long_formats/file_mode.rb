@@ -6,6 +6,17 @@ require_relative './permission'
 module Sections
   module LongFormats
     class FileMode
+      FILE_TYPE_CHAR = {
+        'file' => '-',
+        'directory' => 'd',
+        'characterSpecial' => 'c',
+        'blockSpecial' => 'b',
+        'fifo' => 'p',
+        'link' => 'l',
+        'socket' => 's',
+        'unknown' => ' '
+      }.freeze
+
       def initialize(file_lstat, full_path)
         @file_lstat = file_lstat
         @full_path = full_path
@@ -18,17 +29,6 @@ module Sections
       private
 
       attr_reader :file_lstat, :full_path
-
-      FILE_TYPE_CHAR = {
-        'file' => '-',
-        'directory' => 'd',
-        'characterSpecial' => 'c',
-        'blockSpecial' => 'b',
-        'fifo' => 'p',
-        'link' => 'l',
-        'socket' => 's',
-        'unknown' => ' '
-      }.freeze
     end
   end
 end
