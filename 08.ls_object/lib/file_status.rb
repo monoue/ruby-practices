@@ -3,12 +3,12 @@
 require 'etc'
 
 class FileStatus
-  attr_reader :filename
+  attr_reader :filename, :full_path, :lstat
 
   def initialize(filename, directory_path: '.')
     @filename = filename
-    full_path = "#{directory_path}/#{filename}"
-    @lstat = File.lstat(full_path)
+    @full_path = "#{directory_path}/#{filename}"
+    @lstat = File.lstat(@full_path)
   end
 
   def nlink
@@ -42,8 +42,4 @@ class FileStatus
   def multibyte_chars_of_filename_num
     filename.chars.count { |char| !char.ascii_only? }
   end
-
-  private
-
-  attr_reader :lstat
 end

@@ -6,19 +6,6 @@ require_relative '../file_status'
 
 module Sections
   class LongFormatFilesSection
-    include LongFormats::Permission
-
-    FILE_TYPE_CHAR = {
-      'file' => '-',
-      'directory' => 'd',
-      'characterSpecial' => 'c',
-      'blockSpecial' => 'b',
-      'fifo' => 'p',
-      'link' => 'l',
-      'socket' => 's',
-      'unknown' => ' '
-    }.freeze
-
     def initialize(filenames, directory_path: '.')
       @filenames = filenames
       @directory_path = directory_path
@@ -31,12 +18,14 @@ module Sections
       return '' if file_statuses.empty?
 
       entire_file_status_width = build_entire_file_status_width
-      section = file_statuses.map.with_index do |file_status, i|
-        full_path = "#{directory_path}/#{filenames[i]}"
-        lstat = File.lstat(full_path)
-        file_mode = build_file_mode(lstat, full_path)
-        long_format_line = LongFormats::LongFormatLine.new(file_status, entire_file_status_width)
-        "#{file_mode} #{long_format_line.format_line}"
+      section = file_statuses.map do |file_status|
+        # full_path = "#{directory_path}/#{filenames[i]}"
+        # lstat = File.lstat(full_path)
+        # file_mode = build_file_mode(lstat, full_path)
+        # long_format_line = LongFormats::LongFormatLine.new(file_status, entire_file_status_width)
+        # "#{file_mode} #{long_format_line.format_line}"
+
+        LongFormats::LongFormatLine.new(file_status, entire_file_status_width).format_line
       end.join("\n")
       display_total ? "#{make_total_blocks_line}#{section}\n" : "#{section}\n"
     end
@@ -64,10 +53,6 @@ module Sections
         max_size_width = [file_status.file_size.to_s.size, max_size_width].max
       end
       StatusWidth.new(max_nlink_width, max_owner_name_width, max_group_name_width, max_size_width)
-    end
-
-    def build_file_mode(file_lstat, full_path)
-      FILE_TYPE_CHAR[file_lstat.ftype] + LongFormats::Permission.format_permission(file_lstat) + Mac.new.attr(full_path)
     end
   end
 end
