@@ -8,7 +8,7 @@ require_relative './sections'
 class Ls
   def initialize(command_line_arguments = ARGV)
     @ls_option = LsOption.new(command_line_arguments)
-    @files, @directories, @non_existent_paths = group_paths(@ls_option.filenames, @ls_option.reverse?)
+    @files, @directories, @non_existent_paths = group_paths(@ls_option)
   end
 
   def build_results
@@ -44,9 +44,9 @@ class Ls
     end.join("\n")
   end
 
-  def group_paths(filenames, reverse_flag)
-    classified_paths = classify_paths(filenames)
-    sort_paths(classified_paths, reverse_flag)
+  def group_paths(ls_option)
+    classified_paths = classify_paths(ls_option.filenames)
+    sort_paths(classified_paths, ls_option.reverse?)
   end
 
   def classify_paths(filenames)

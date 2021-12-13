@@ -7,7 +7,7 @@ RSpec.describe Ls do # rubocop:disable Metrics/BlockLength
   describe 'build_results' do # rubocop:disable Metrics/BlockLength
     def compare_results(command_line_argument)
       command_line_arguments = command_line_argument.split(' ')
-      warning_message, normal_result = Ls.new(command_line_arguments: command_line_arguments.dup).build_results
+      warning_message, normal_result = Ls.new(command_line_arguments.dup).build_results
       cmd = ['ls', *command_line_arguments].join(' ')
       stdout, stderr, = Open3.capture3(cmd)
       expect(warning_message).to eq stderr.chomp
@@ -16,7 +16,7 @@ RSpec.describe Ls do # rubocop:disable Metrics/BlockLength
 
     context 'without arguments' do
       it 'outputs the same result as the output of ls command with the condition' do
-        warning_message, normal_result = Ls.new(command_line_arguments: []).build_results
+        warning_message, normal_result = Ls.new([]).build_results
         stdout, stderr, = Open3.capture3('ls')
         expect(normal_result.split(' ').join("\n")).to eq stdout.chomp
         expect(warning_message).to eq stderr
