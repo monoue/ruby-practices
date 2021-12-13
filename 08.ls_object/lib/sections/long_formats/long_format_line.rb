@@ -59,7 +59,7 @@ module Sections
       end
 
       def build_file_mode
-        FILE_TYPE_CHAR[@file_status.lstat.ftype] + LongFormats::Permission.format_permission(@file_status.lstat) + Mac.new.attr(@file_status.full_path)
+        FILE_TYPE_CHAR[@file_status.lstat.ftype] + format_permission(@file_status.lstat) + Mac.new.attr(@file_status.full_path)
       end
     end
   end
