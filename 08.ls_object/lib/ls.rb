@@ -29,13 +29,7 @@ class Ls
     directory_sections = directories.map do |directory_path|
       Sections::DirectorySection.new(directory_path, ls_option)
     end
-    result_sections =
-      if files.empty?
-        directory_sections
-      else
-        [files_section, *directory_sections]
-      end
-    result_sections.map(&:format_section).join("\n")
+    "#{[files_section, *directory_sections].map(&:format_section).join("\n").strip}\n"
   end
 
   def build_warning_message
