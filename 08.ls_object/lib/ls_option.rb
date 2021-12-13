@@ -5,7 +5,7 @@ require 'optparse'
 class LsOption
   attr_reader :filenames
 
-  def initialize(command_line_arguments: ARGV)
+  def initialize(command_line_arguments = ARGV)
     option_parser = OptionParser.new
     @options = init_options(option_parser)
     @filenames = option_parser.parse(command_line_arguments)

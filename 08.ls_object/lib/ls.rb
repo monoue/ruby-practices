@@ -7,8 +7,8 @@ require_relative './grouped_filenames_container'
 require_relative './sections'
 
 class Ls
-  def initialize(command_line_arguments: ARGV)
-    @ls_option = LsOption.new(command_line_arguments: command_line_arguments)
+  def initialize(command_line_arguments = ARGV)
+    @ls_option = LsOption.new(command_line_arguments)
     @grouped_filenames_container =
       GroupedFilenamesContainer.new(ls_option.filenames, reverse_flag: ls_option.reverse?)
   end

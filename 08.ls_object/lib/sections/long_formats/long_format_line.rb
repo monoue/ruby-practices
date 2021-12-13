@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative './permission'
+require_relative './permission_formattable'
 
 module Sections
   module LongFormats
     class LongFormatLine
-      include LongFormats::Permission
+      include LongFormats::PermissionFormattable
 
       FILE_TYPE_CHAR = {
         'file' => '-',
