@@ -19,12 +19,6 @@ module Sections
 
       entire_file_status_width = build_entire_file_status_width
       section = file_statuses.map do |file_status|
-        # full_path = "#{directory_path}/#{filenames[i]}"
-        # lstat = File.lstat(full_path)
-        # file_mode = build_file_mode(lstat, full_path)
-        # long_format_line = LongFormats::LongFormatLine.new(file_status, entire_file_status_width)
-        # "#{file_mode} #{long_format_line.format_line}"
-
         LongFormats::LongFormatLine.new(file_status, entire_file_status_width).format_line
       end.join("\n")
       display_total ? "#{make_total_blocks_line}#{section}\n" : "#{section}\n"

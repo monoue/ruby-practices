@@ -8,7 +8,7 @@ require_relative './sections'
 class Ls
   def initialize(command_line_arguments = ARGV)
     @ls_option = LsOption.new(command_line_arguments)
-    @files, @directories, @non_existent_paths = group_paths(@ls_option)
+    @filenames, @directory_paths, @non_existent_paths = group_paths(@ls_option)
   end
 
   def build_results
@@ -17,16 +17,16 @@ class Ls
 
   private
 
-  attr_reader :ls_option, :files, :directories, :non_existent_paths
+  attr_reader :ls_option, :filenames, :directory_paths, :non_existent_paths
 
   def build_result
     files_section =
       if ls_option.long_format?
-        Sections::LongFormatFilesSection.new(files)
+        Sections::LongFormatFilesSection.new(filenames)
       else
-        Sections::NormalFormatFilesSection.new(files)
+        Sections::NormalFormatFilesSection.new(filenames)
       end
-    directory_sections = directories.map do |directory_path|
+    directory_sections = directory_paths.map do |directory_path|
       Sections::DirectorySection.new(directory_path, ls_option)
     end
     "#{[files_section, *directory_sections].map(&:format_section).join("\n").strip}\n"
@@ -44,15 +44,15 @@ class Ls
   end
 
   def classify_paths(filenames)
-    paths = { files: [], directories: [], non_existent_paths: [] }
+    paths = { filenames: [], directory_paths: [], non_existent_paths: [] }
     if filenames.empty?
-      paths[:directories] << '.'
+      paths[:directory_paths] << '.'
     else
       filenames.each do |path|
         if File.file?(path)
-          paths[:files] << path
+          paths[:filenames] << path
         elsif File.directory?(path)
-          paths[:directories] << path
+          paths[:directory_paths] << path
         else
           paths[:non_existent_paths] << path
         end
@@ -64,7 +64,7 @@ class Ls
   def sort_paths(paths, reverse_flag)
     sorted_paths = paths.transform_values(&:sort)
     if reverse_flag
-      [sorted_paths[:files].reverse, sorted_paths[:directories].reverse, sorted_paths[:non_existent_paths]]
+      [sorted_paths[:filenames].reverse, sorted_paths[:directory_paths].reverse, sorted_paths[:non_existent_paths]]
     else
       sorted_paths.values
     end
