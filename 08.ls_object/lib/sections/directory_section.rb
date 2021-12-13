@@ -16,7 +16,7 @@ module Sections
         if ls_option.long_format?
           LongFormatFilesSection.new(filenames, directory_path).format_section(display_total: true)
         else
-          NormalFormatFilesSection.new(filenames).format_section
+          NormalFormatFilesSection.new(filenames, directory_path).format_section
         end
       ls_option.filenames.size > 1 ? "#{directory_path}:\n#{directory_section}" : directory_section
     end

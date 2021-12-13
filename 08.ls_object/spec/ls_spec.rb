@@ -18,7 +18,20 @@ RSpec.describe Ls do # rubocop:disable Metrics/BlockLength
       it 'outputs the same result as the output of ls command with the condition' do
         warning_message, normal_result = Ls.new([]).build_results
         stdout, stderr, = Open3.capture3('ls')
-        expect(normal_result.split(' ').join("\n")).to eq stdout.chomp
+        normal_result_for_stdout = normal_result.split(' ').join("\n")
+        expect(normal_result_for_stdout).to eq stdout.chomp
+        expect(warning_message).to eq stderr
+      end
+    end
+
+    context 'with directories arguments' do
+      it 'outputs the same result as the output of ls command with the condition' do
+        warning_message, normal_result = Ls.new(%w[lib spec]).build_results
+        stdout, stderr, = Open3.capture3('ls lib spec')
+        normal_result_for_stdout_without_section_separation = normal_result.split(' ').join("\n")
+        start_of_the_second_section = normal_result_for_stdout_without_section_separation.index('spec:')
+        normal_result_for_stdout = normal_result_for_stdout_without_section_separation.insert(start_of_the_second_section, "\n")
+        expect(normal_result_for_stdout).to eq stdout.chomp
         expect(warning_message).to eq stderr
       end
     end

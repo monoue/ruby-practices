@@ -6,7 +6,7 @@ require 'time'
 RSpec.describe Sections::LongFormats::LongFormatLine do # rubocop:disable Metrics/BlockLength
   describe 'format_line' do # rubocop:disable Metrics/BlockLength
     let!(:status_width) { Sections::LongFormatFilesSection::StatusWidth.new(0, 0, 0, 0) }
-    let!(:file_status) { FileStatus.new('spec_helper.rb', directory_path: 'spec') }
+    let!(:file_status) { FileStatus.new('spec_helper.rb', 'spec') }
 
     context "when the target file's last modification time is before the current time and the difference is" do
       # 2021-12-15 12:00 の半年前は 2021-06-15 21:05:24
