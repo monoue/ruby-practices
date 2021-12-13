@@ -14,9 +14,9 @@ module Sections
       filenames = init_filenames(directory_path, ls_option)
       directory_section =
         if ls_option.long_format?
-          LongFormatFilesSection.new(filenames, directory_path: directory_path).format_section(display_total: true)
+          LongFormatFilesSection.new(filenames, directory_path).format_section(display_total: true)
         else
-          NormalFormatFilesSection.new(filenames, directory_path: directory_path).format_section
+          NormalFormatFilesSection.new(filenames).format_section
         end
       ls_option.filenames.size > 1 ? "#{directory_path}:\n#{directory_section}" : directory_section
     end

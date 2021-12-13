@@ -5,9 +5,8 @@ require_relative '../file_status'
 
 module Sections
   class NormalFormatFilesSection
-    def initialize(filenames, directory_path: '.')
+    def initialize(filenames)
       @filenames = filenames
-      @directory_path = directory_path
     end
 
     def format_section
@@ -34,7 +33,7 @@ module Sections
 
     private
 
-    attr_reader :filenames, :directory_path
+    attr_reader :filenames
 
     def calculate_multibyte_width_for_filename(file_statuses)
       file_statuses.map(&:multibyte_filename_length).max + 1

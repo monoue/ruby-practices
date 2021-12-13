@@ -6,11 +6,9 @@ require_relative '../file_status'
 
 module Sections
   class LongFormatFilesSection
-    def initialize(filenames, directory_path: '.')
-      @filenames = filenames
-      @directory_path = directory_path
+    def initialize(filenames, directory_path = '.')
       @file_statuses = filenames.map do |filename|
-        FileStatus.new(filename, directory_path: directory_path)
+        FileStatus.new(filename, directory_path)
       end
     end
 
@@ -26,7 +24,7 @@ module Sections
 
     private
 
-    attr_reader :filenames, :directory_path, :file_statuses
+    attr_reader :file_statuses
 
     def make_total_blocks_line
       total_blocks = file_statuses.map(&:blocks).sum

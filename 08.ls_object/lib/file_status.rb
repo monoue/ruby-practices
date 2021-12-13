@@ -5,7 +5,7 @@ require 'etc'
 class FileStatus
   attr_reader :filename, :full_path, :lstat
 
-  def initialize(filename, directory_path: '.')
+  def initialize(filename, directory_path = '.')
     @filename = filename
     @full_path = "#{directory_path}/#{filename}"
     @lstat = File.lstat(@full_path)
