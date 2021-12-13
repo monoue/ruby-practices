@@ -3,14 +3,12 @@
 # frozen_string_literal: true
 
 require_relative './ls_option'
-require_relative './grouped_filenames_container'
 require_relative './sections'
 
 class Ls
   def initialize(command_line_arguments = ARGV)
     @ls_option = LsOption.new(command_line_arguments)
-    @grouped_filenames_container =
-      GroupedFilenamesContainer.new(ls_option.filenames, reverse_flag: ls_option.reverse?)
+    @files, @directories, @non_existent_paths = group_paths(@ls_option.filenames, @ls_option.reverse?)
   end
 
   def build_results
@@ -19,18 +17,20 @@ class Ls
 
   private
 
+  attr_reader :ls_option, :files, :directories, :non_existent_paths
+
   def build_result
     files_section =
       if ls_option.long_format?
-        Sections::LongFormatFilesSection.new(grouped_filenames_container.files)
+        Sections::LongFormatFilesSection.new(files)
       else
-        Sections::NormalFormatFilesSection.new(grouped_filenames_container.files)
+        Sections::NormalFormatFilesSection.new(files)
       end
-    directory_sections = grouped_filenames_container.directories.map do |directory_path|
+    directory_sections = directories.map do |directory_path|
       Sections::DirectorySection.new(directory_path, ls_option)
     end
     result_sections =
-      if grouped_filenames_container.files.empty?
+      if files.empty?
         directory_sections
       else
         [files_section, *directory_sections]
@@ -39,12 +39,42 @@ class Ls
   end
 
   def build_warning_message
-    grouped_filenames_container.non_existent_paths.map do |path|
+    non_existent_paths.map do |path|
       "ls: #{path}: No such file or directory"
     end.join("\n")
   end
 
-  attr_reader :ls_option, :grouped_filenames_container
+  def group_paths(filenames, reverse_flag)
+    classified_paths = classify_paths(filenames)
+    sort_paths(classified_paths, reverse_flag)
+  end
+
+  def classify_paths(filenames)
+    paths = { files: [], directories: [], non_existent_paths: [] }
+    if filenames.empty?
+      paths[:directories] << '.'
+    else
+      filenames.each do |path|
+        if File.file?(path)
+          paths[:files] << path
+        elsif File.directory?(path)
+          paths[:directories] << path
+        else
+          paths[:non_existent_paths] << path
+        end
+      end
+    end
+    paths
+  end
+
+  def sort_paths(paths, reverse_flag)
+    sorted_paths = paths.transform_values(&:sort)
+    if reverse_flag
+      [sorted_paths[:files].reverse, sorted_paths[:directories].reverse, sorted_paths[:non_existent_paths]]
+    else
+      sorted_paths.values
+    end
+  end
 end
 
 if __FILE__ == $PROGRAM_NAME
