@@ -11,7 +11,7 @@ RSpec.describe Ls do # rubocop:disable Metrics/BlockLength
       cmd = ['ls', *command_line_arguments].join(' ')
       stdout, stderr, _status = Open3.capture3(cmd)
       expect(warning_message).to eq stderr.chomp
-      expect(normal_result).to eq stdout
+      expect("#{normal_result}\n").to eq stdout
     end
 
     context 'without arguments' do

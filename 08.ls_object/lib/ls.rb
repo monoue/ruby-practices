@@ -29,7 +29,7 @@ class Ls
     directory_sections = directory_paths.map do |directory_path|
       Sections::DirectorySection.new(directory_path, ls_option)
     end
-    "#{[files_section, *directory_sections].map(&:format_section).join("\n").strip}\n"
+    "#{[files_section, *directory_sections].map(&:format_section).join("\n\n").strip}"
   end
 
   def build_warning_message
@@ -74,5 +74,5 @@ end
 if __FILE__ == $PROGRAM_NAME
   warning_message, normal_result = Ls.new.build_results
   warn warning_message unless warning_message.empty?
-  puts normal_result unless normal_result.empty?
+  puts "#{normal_result}\n" unless normal_result.empty?
 end

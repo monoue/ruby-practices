@@ -19,7 +19,7 @@ module Sections
       section = file_statuses.map do |file_status|
         LongFormats::LongFormatLine.new(file_status, entire_file_status_width).format_line
       end.join("\n")
-      display_total ? "#{make_total_blocks_line}#{section}\n" : "#{section}\n"
+      display_total ? "#{make_total_blocks_line}\n#{section}" : section
     end
 
     private
@@ -28,7 +28,7 @@ module Sections
 
     def make_total_blocks_line
       total_blocks = file_statuses.map(&:blocks).sum
-      "total #{total_blocks}\n"
+      "total #{total_blocks}"
     end
 
     StatusWidth = Struct.new(:nlink, :owner_name, :group_name, :file_size)

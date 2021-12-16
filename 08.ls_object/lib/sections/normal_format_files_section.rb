@@ -29,7 +29,7 @@ module Sections
         end
         rows << cols.join.rstrip
       end
-      "#{rows.join("\n")}\n"
+      rows.join("\n")
     end
 
     private
