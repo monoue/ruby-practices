@@ -6,6 +6,10 @@ require_relative '../file_status'
 
 module Sections
   class LongFormatFilesSection
+    def self.format_section(filenames, directory_path = '.', display_total: false)
+      new(filenames, directory_path).format_section(display_total: display_total)
+    end
+
     def initialize(filenames, directory_path = '.')
       @file_statuses = filenames.map do |filename|
         FileStatus.new(filename, directory_path)
@@ -17,7 +21,7 @@ module Sections
 
       entire_file_status_width = build_entire_file_status_width
       section = file_statuses.map do |file_status|
-        LongFormats::LongFormatLine.new(file_status, entire_file_status_width).format_line
+        LongFormats::LongFormatLine.format_line(file_status, entire_file_status_width)
       end.join("\n")
       display_total ? "#{make_total_blocks_line}\n#{section}" : section
     end

@@ -7,7 +7,7 @@ RSpec.describe Ls do # rubocop:disable Metrics/BlockLength
   describe 'build_results' do # rubocop:disable Metrics/BlockLength
     def compare_results(command_line_argument)
       command_line_arguments = command_line_argument.split(' ')
-      warning_message, normal_result = Ls.new(command_line_arguments.dup).build_results
+      warning_message, normal_result = Ls.build_results(command_line_arguments.dup)
       cmd = ['ls', *command_line_arguments].join(' ')
       stdout, stderr, _status = Open3.capture3(cmd)
       expect(warning_message).to eq stderr.chomp
@@ -16,7 +16,7 @@ RSpec.describe Ls do # rubocop:disable Metrics/BlockLength
 
     context 'without arguments' do
       it 'outputs the same result as the output of ls command with the condition' do
-        warning_message, normal_result = Ls.new([]).build_results
+        warning_message, normal_result = Ls.build_results([])
         stdout, stderr, _status = Open3.capture3('ls')
         normal_result_for_stdout = normal_result.split(' ').join("\n")
         expect(normal_result_for_stdout).to eq stdout.chomp
@@ -26,7 +26,7 @@ RSpec.describe Ls do # rubocop:disable Metrics/BlockLength
 
     context 'with directories arguments' do
       it 'outputs the same result as the output of ls command with the condition' do
-        warning_message, normal_result = Ls.new(%w[lib spec]).build_results
+        warning_message, normal_result = Ls.build_results(%w[lib spec])
         stdout, stderr, _status = Open3.capture3('ls lib spec')
         raw_sections = normal_result.split("\n\n")
         normal_results_for_stdout = raw_sections.map do |raw_section|

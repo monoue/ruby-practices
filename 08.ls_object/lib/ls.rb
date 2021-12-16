@@ -6,6 +6,10 @@ require_relative './ls_option'
 require_relative './sections'
 
 class Ls
+  def self.build_results(command_line_arguments = ARGV)
+    new(command_line_arguments).build_results
+  end
+
   def initialize(command_line_arguments = ARGV)
     @ls_option = LsOption.new(command_line_arguments)
     @filenames, @directory_paths, @non_existent_paths = group_paths
@@ -29,7 +33,7 @@ class Ls
     directory_sections = directory_paths.map do |directory_path|
       Sections::DirectorySection.new(directory_path, ls_option)
     end
-    "#{[files_section, *directory_sections].map(&:format_section).join("\n\n").strip}"
+    [files_section, *directory_sections].map(&:format_section).join("\n\n").strip
   end
 
   def build_warning_message
@@ -72,7 +76,7 @@ class Ls
 end
 
 if __FILE__ == $PROGRAM_NAME
-  warning_message, normal_result = Ls.new.build_results
+  warning_message, normal_result = Ls.build_results
   warn warning_message unless warning_message.empty?
   puts "#{normal_result}\n" unless normal_result.empty?
 end

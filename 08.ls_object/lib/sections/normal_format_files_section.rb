@@ -5,6 +5,10 @@ require_relative '../file_status'
 
 module Sections
   class NormalFormatFilesSection
+    def self.format_section(filenames, directory_path = '.')
+      new(filenames, directory_path).format_section
+    end
+
     def initialize(filenames, directory_path = '.')
       @filenames = filenames
       @directory_path = directory_path

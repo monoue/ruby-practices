@@ -18,6 +18,10 @@ module Sections
         'unknown' => ' '
       }.freeze
 
+      def self.format_line(file_status, entire_file_status_width)
+        new(file_status, entire_file_status_width).format_line
+      end
+
       def initialize(file_status, entire_file_status_width)
         @file_status = file_status
         @entire_file_status_width = entire_file_status_width
