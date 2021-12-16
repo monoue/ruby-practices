@@ -28,7 +28,12 @@ RSpec.describe Ls do # rubocop:disable Metrics/BlockLength
       it 'outputs the same result as the output of ls command with the condition' do
         warning_message, normal_result = Ls.new(%w[lib spec]).build_results
         stdout, stderr, _status = Open3.capture3('ls lib spec')
-        normal_result_for_stdout_without_section_separation = normal_result.split(' ').join("\n")
+        raw_sections = normal_result.split("\n\n")
+        normal_results_for_stdout = raw_sections.map do |raw_section|
+          section_elements = raw_section.split(' ')
+          [section_elements[0], *section_elements[1..].sort].join("\n")
+        end
+        normal_result_for_stdout_without_section_separation = normal_results_for_stdout.join("\n")
         start_of_the_second_section = normal_result_for_stdout_without_section_separation.index('spec:')
         normal_result_for_stdout = normal_result_for_stdout_without_section_separation.insert(start_of_the_second_section, "\n")
         expect(normal_result_for_stdout).to eq stdout.chomp
