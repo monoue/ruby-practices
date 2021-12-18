@@ -11,33 +11,35 @@ module Sections
     end
 
     def initialize(filenames, directory_path = '.')
-      @file_statuses = filenames.map do |filename|
-        FileStatus.new(filename, directory_path)
-      end
+      @filenames = filenames
+      @directory_path = directory_path
     end
 
     def format_section(display_total: false)
-      return '' if file_statuses.empty?
+      return '' if filenames.empty?
 
-      entire_file_status_width = build_entire_file_status_width
+      file_statuses = filenames.map do |filename|
+        FileStatus.new(filename, directory_path)
+      end
+      entire_file_status_width = build_entire_file_status_width(file_statuses)
       section = file_statuses.map do |file_status|
         LongFormats::LongFormatLine.format_line(file_status, entire_file_status_width)
       end.join("\n")
-      display_total ? "#{make_total_blocks_line}\n#{section}" : section
+      display_total ? "#{make_total_blocks_line(file_statuses)}\n#{section}" : section
     end
 
     private
 
-    attr_reader :file_statuses
+    attr_reader :filenames, :directory_path
 
-    def make_total_blocks_line
+    def make_total_blocks_line(file_statuses)
       total_blocks = file_statuses.map(&:blocks).sum
       "total #{total_blocks}"
     end
 
     StatusWidth = Struct.new(:nlink, :owner_name, :group_name, :file_size)
 
-    def build_entire_file_status_width
+    def build_entire_file_status_width(file_statuses)
       max_nlink_width = 0
       max_owner_name_width = 0
       max_group_name_width = 0
